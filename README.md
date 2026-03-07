@@ -19,9 +19,9 @@
 🚧: Working in progress\
 💬: In review
 
-| Platform | Public service | API documentation | Status | Custom domain |
-| --- | --- | --- | --- | --- |
-| GitLab | https://gitlab.com | [GitLab API v4](https://docs.gitlab.com/ee/api/) | ✅ | ✅ |
+| Platform | Public service | API documentation | Status |
+| --- | --- | --- | --- |
+| GitLab | https://gitlab.com | [GitLab API v4](https://docs.gitlab.com/ee/api/) | ✅ |
 
 ## License
 
