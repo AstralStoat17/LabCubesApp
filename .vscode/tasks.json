@@ -3,7 +3,7 @@
   "tasks": [
     {
       "label": "all",
-      "dependsOn": ["root", "gql_github", "gql_gitlab", "github_trending"]
+      "dependsOn": ["root", "gql_gitlab"]
     },
     {
       "label": "root",
@@ -12,24 +12,10 @@
       "args": ["run", "build_runner", "watch"]
     },
     {
-      "label": "gql_github",
-      "type": "dart",
-      "command": "dart",
-      "cwd": "packages/gql_github",
-      "args": ["run", "build_runner", "watch"]
-    },
-    {
       "label": "gql_gitlab",
       "type": "dart",
       "command": "dart",
       "cwd": "packages/gql_gitlab",
-      "args": ["run", "build_runner", "watch"]
-    },
-    {
-      "label": "github_trending",
-      "type": "dart",
-      "command": "dart",
-      "cwd": "packages/github_trending",
       "args": ["run", "build_runner", "watch"]
     }
   ]
