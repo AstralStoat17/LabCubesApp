@@ -1,4 +1,3 @@
-import 'package:antd_mobile/antd_mobile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -10,8 +9,6 @@ import 'package:git_touch/widgets/avatar.dart';
 import 'package:git_touch/widgets/link.dart';
 import 'package:git_touch/widgets/markdown_view.dart';
 import 'package:git_touch/widgets/user_name.dart';
-import 'package:gql_github/issue.data.gql.dart';
-import 'package:gql_github/schema.schema.gql.dart';
 import 'package:primer/primer.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;

@@ -1,4 +1,3 @@
-import 'package:antd_mobile/antd_mobile.dart';
 import 'package:file_icon/file_icon.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/widgets.dart';

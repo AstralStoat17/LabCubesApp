@@ -1,8 +1,6 @@
-import 'package:antd_mobile/antd_mobile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:git_touch/utils/utils.dart';
-import 'package:github/github.dart' as github;
 
 class LanguageBarItem {
   LanguageBarItem({

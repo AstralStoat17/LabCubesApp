@@ -6,14 +6,9 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:git_touch/models/account.dart';
-import 'package:git_touch/models/bitbucket.dart';
-import 'package:git_touch/models/gitea.dart';
-import 'package:git_touch/models/gitee.dart';
-import 'package:git_touch/models/gitlab.dart';
-import 'package:git_touch/models/gogs.dart';
+
 import 'package:git_touch/utils/utils.dart';
-import 'package:github/github.dart';
-import 'package:gql_http_link/gql_http_link.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:nanoid/nanoid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,12 +20,7 @@ import 'package:url_launcher/url_launcher.dart';
 const clientId = 'df930d7d2e219f26142a';
 
 class PlatformType {
-  static const github = 'github';
   static const gitlab = 'gitlab';
-  static const bitbucket = 'bitbucket';
-  static const gitea = 'gitea';
-  static const gitee = 'gitee';
-  static const gogs = 'gogs';
 }
 
 class DataWithPage<T> {

@@ -1,4 +1,3 @@
-import 'package:antd_mobile/antd_mobile.dart';
 import 'package:flutter/widgets.dart';
 
 class BorderView extends StatelessWidget {

@@ -1,15 +1,11 @@
 import 'dart:core';
 
-import 'package:antd_mobile/antd_mobile.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/widgets/branch_name.dart';
 import 'package:git_touch/widgets/comment_item.dart';
 import 'package:git_touch/widgets/hex_color_tag.dart';
-import 'package:gql_github/issue.data.gql.dart';
-import 'package:gql_github/schema.schema.gql.dart';
 
 TextSpan createUserSpan(BuildContext context, String? login) {
   return createLinkSpan(context, login, '/github/$login');

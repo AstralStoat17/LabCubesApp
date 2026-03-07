@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'gitlab.g.dart';
-
 @JsonSerializable(fieldRename: FieldRename.snake)
 class GitlabUser {
   GitlabUser();

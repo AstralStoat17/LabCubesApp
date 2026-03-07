@@ -5,14 +5,9 @@ import 'package:git_touch/models/code.dart';
 import 'package:git_touch/models/notification.dart';
 import 'package:git_touch/models/theme.dart';
 import 'package:provider/provider.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+
 
 void main() async {
-  await SentryFlutter.init(
-    (options) {
-      options.dsn =
-          'https://006354525fa244289c48169790fa3757@o71119.ingest.sentry.io/5814819';
-    },
     // Init your App.
     appRunner: () async {
       final notificationModel = NotificationModel();
