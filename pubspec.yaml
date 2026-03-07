@@ -31,12 +31,6 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  gql_github:
-    path: ./packages/gql_github
-  gql_gitlab:
-    path: ./packages/gql_gitlab
-  github_trending:
-    path: ./packages/github_trending
   antd_mobile:
     path: ../ant-design-mobile-flutter
   cupertino_icons: ^1.0.5
@@ -49,7 +43,6 @@ dependencies:
   flutter_markdown: ^0.6.12
   flutter_svg: ^1.1.5
   flutter_vector_icons: ^2.0.0
-  github: ^9.4.0
   gql: ^0.14.0
   gql_http_link: ^0.4.4+1
   http: ^0.13.5
