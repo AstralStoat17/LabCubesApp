@@ -14,7 +14,7 @@ class StorageKeys {
   @Deprecated('Use `accounts` instead')
   static const account = 'account';
   @Deprecated('Use `accounts` instead')
-  static const github = 'github';
+
   @Deprecated('Split into several keys')
   static const iTheme = 'theme';
 
@@ -64,7 +64,7 @@ Tuple2<String, String> parseRepositoryFullName(String fullName) {
   return Tuple2(ls[0], ls[1]);
 }
 
-class GithubPalette {
+class AppPalette {
   static const open = Color(0xff2cbe4e);
   static const closed = PrimerColors.red600;
   static const merged = PrimerColors.purple500;

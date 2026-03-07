@@ -135,22 +135,7 @@ class MarkdownFlutterView extends StatelessWidget {
                 '/${basePaths![0]}/${basePaths![1]}/${basePaths![2]}?path=${y.urlencode}');
           }
 
-          // TODO: Relative paths
-          if (url!.startsWith('https://github.com')) {
-            const matchedPaths = [
-              '/{owner}/{name}/pull/{number}',
-              '/{owner}/{name}/issues/{number}',
-              '/{owner}/{name}',
-              '/{login}'
-            ];
-            for (final p in matchedPaths) {
-              final m = matchPattern(url, p);
-              if (m != null) {
-                context.pushUrl(
-                    url.replaceFirst(RegExp(r'https://github.com'), '/github'));
-              }
-            }
-          }
+
 
           launchStringUrl(url);
         },

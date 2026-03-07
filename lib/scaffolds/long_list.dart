@@ -22,7 +22,6 @@ class LongListPayload<T, K> {
 // This is a scaffold for issue and pull request
 // Since the list could be very long, and some users may only want to to check trailing items
 // We should load leading and trailing items at first fetching, and do load more in the middle
-// e.g. https://github.com/reactjs/rfcs/pull/68
 class LongListStatefulScaffold<T, K> extends StatefulWidget {
   const LongListStatefulScaffold({
     required this.title,

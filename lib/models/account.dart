@@ -12,8 +12,6 @@ class Account with _$Account {
     required String login,
     required String avatarUrl,
     int? gitlabId, // For GitLab
-    String? appPassword, // For Bitbucket
-    String? accountId, // For Bitbucket
   }) = _Account;
 
   factory Account.fromJson(Map<String, dynamic> json) =>

@@ -29,28 +29,6 @@ class SettingsScreen extends StatelessWidget {
             mode: AntListMode.card,
             header: Text(AppLocalizations.of(context)!.system),
             children: [
-              if (auth.activeAccount!.platform == PlatformType.github) ...[
-                AntListItem(
-                  child: Text(AppLocalizations.of(context)!.githubStatus),
-                  onClick: () {
-                    launchStringUrl('https://www.githubstatus.com/');
-                  },
-                ),
-                AntListItem(
-                  child: const Text('Meta'),
-                  onClick: () {
-                    context.push('/settings/github-meta');
-                  },
-                ),
-                AntListItem(
-                  onClick: () {
-                    launchStringUrl(
-                        'https://github.com/settings/connections/applications/$clientId');
-                  },
-                  extra: Text(auth.activeAccount!.login),
-                  child: Text(AppLocalizations.of(context)!.reviewPermissions),
-                ),
-              ],
               if (auth.activeAccount!.platform == PlatformType.gitlab)
                 AntListItem(
                   onClick: () {
@@ -64,21 +42,6 @@ class SettingsScreen extends StatelessWidget {
                     },
                   ),
                   child: Text(AppLocalizations.of(context)!.gitlabStatus),
-                ),
-              if (auth.activeAccount!.platform == PlatformType.gitea)
-                AntListItem(
-                  prefix: const Icon(Octicons.info),
-                  onClick: () {
-                    context.push('/gitea/status');
-                  },
-                  extra: FutureBuilder<String>(
-                    future:
-                        auth.fetchGitea('/version').then((v) => v['version']),
-                    builder: (context, snapshot) {
-                      return Text(snapshot.data ?? '');
-                    },
-                  ),
-                  child: Text(AppLocalizations.of(context)!.giteaStatus),
                 ),
               AntListItem(
                 onClick: () {
@@ -194,14 +157,10 @@ class SettingsScreen extends StatelessWidget {
             header: Text(AppLocalizations.of(context)!.feedback),
             children: [
               AntListItem(
-                extra: const Text('git-touch/git-touch'),
+                extra: const Text(''),
                 onClick: () {
-                  const suffix = 'git-touch/git-touch/issues/new';
-                  if (auth.activeAccount!.platform == PlatformType.github) {
-                    context.push('/github/$suffix');
-                  } else {
-                    launchStringUrl('https://github.com/$suffix');
-                  }
+                  const suffix = '';
+                  launchStringUrl('https://github.com/$suffix');
                 },
                 child: Text(AppLocalizations.of(context)!.submitAnIssue),
               ),
@@ -209,16 +168,16 @@ class SettingsScreen extends StatelessWidget {
                 child: Text(AppLocalizations.of(context)!.rateThisApp),
                 onClick: () {
                   LaunchReview.launch(
-                    androidAppId: 'io.github.pd4d10.gittouch',
-                    iOSAppId: '1452042346',
+                    androidAppId: '',
+                    iOSAppId: '',
                   );
                 },
               ),
               AntListItem(
-                extra: const Text('pd4d10@gmail.com'),
+                extra: const Text([EMAIL_ADDRESS]'),
                 arrow: null,
                 onClick: () {
-                  launchStringUrl('mailto:pd4d10@gmail.com');
+                  launchStringUrl('mailto:[EMAIL_ADDRESS]');
                 },
                 child: Text(AppLocalizations.of(context)!.email),
               ),
@@ -243,11 +202,7 @@ class SettingsScreen extends StatelessWidget {
                 extra: const Text('git-touch/git-touch'),
                 onClick: () {
                   const suffix = 'git-touch/git-touch';
-                  if (auth.activeAccount!.platform == PlatformType.github) {
-                    context.push('/github/$suffix');
-                  } else {
-                    launchStringUrl('https://github.com/$suffix');
-                  }
+                  launchStringUrl('https://github.com/$suffix');
                 },
                 child: Text(AppLocalizations.of(context)!.sourceCode),
               ),

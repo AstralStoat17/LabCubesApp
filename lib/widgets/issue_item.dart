@@ -4,31 +4,7 @@ import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/widgets/avatar.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-const issueGqlChunk = '''
-url
-number
-title
-updatedAt
-author {
-  login
-  avatarUrl
-}
-repository {
-  owner {
-    login
-  }
-  name
-}
-labels(first: 10) {
-  nodes {
-    name
-    color
-  }
-}
-comments {
-  totalCount
-}
-''';
+
 
 class IssueItem extends StatelessWidget {
   const IssueItem({
@@ -63,7 +39,7 @@ class IssueItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Icon(isPr ? Octicons.git_pull_request : Octicons.issue_opened,
-              color: GithubPalette.open, size: 20),
+              color: AppPalette.open, size: 20),
           const SizedBox(width: 6),
           Expanded(
             child: Column(

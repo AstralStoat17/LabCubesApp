@@ -23,35 +23,7 @@ class RepoItem extends StatelessWidget {
     required this.avatarLink,
   });
 
-  RepoItem.go({
-    required GogsRepository payload,
-    this.primaryLanguageName,
-    this.primaryLanguageColor,
-    this.note,
-    this.owner,
-    this.name,
-  })  : url = '/gogs/${payload.fullName}',
-        avatarUrl = payload.owner!.avatarUrl,
-        avatarLink = '/gogs/${payload.fullName}',
-        description = payload.description,
-        forkCount = payload.forksCount,
-        starCount = payload.starsCount,
-        iconData = payload.private! ? Octicons.lock : null;
 
-  RepoItem.bb({
-    required BbRepo payload,
-    this.primaryLanguageName,
-    this.primaryLanguageColor,
-  })  : owner = payload.ownerLogin,
-        name = payload.name,
-        url = '/bitbucket/${payload.fullName}',
-        avatarUrl = payload.avatarUrl,
-        avatarLink = null,
-        note = 'Updated ${timeago.format(payload.updatedOn!)}',
-        description = payload.description,
-        forkCount = 0,
-        starCount = 0,
-        iconData = payload.isPrivate! ? Octicons.lock : null;
 
   RepoItem.gl({
     required GitlabProject payload,
@@ -70,37 +42,7 @@ class RepoItem extends StatelessWidget {
             : '/gitlab/user/${payload.namespace!.id}',
         iconData = _buildGlIconData(payload.visibility);
 
-  RepoItem.gh({
-    required this.owner,
-    required this.avatarUrl,
-    required this.name,
-    required this.description,
-    required this.starCount,
-    required this.forkCount,
-    this.primaryLanguageName,
-    this.primaryLanguageColor,
-    this.note,
-    required bool? isPrivate,
-    required bool? isFork,
-  })  : iconData = _buildIconData(isPrivate, isFork),
-        avatarLink = '/github/$owner',
-        url = '/github/$owner/$name';
 
-  factory RepoItem.gql(GRepoParts v, {String? note}) {
-    return RepoItem.gh(
-      owner: v.owner.login,
-      avatarUrl: v.owner.avatarUrl,
-      name: v.name,
-      description: v.description,
-      starCount: v.stargazers.totalCount,
-      forkCount: v.forks.totalCount,
-      primaryLanguageName: v.primaryLanguage?.name,
-      primaryLanguageColor: v.primaryLanguage?.color,
-      note: note,
-      isPrivate: v.isPrivate,
-      isFork: v.isFork,
-    );
-  }
   final String? owner;
   final String? avatarUrl;
   final String? name;
@@ -114,11 +56,7 @@ class RepoItem extends StatelessWidget {
   final String url;
   final String? avatarLink;
 
-  static IconData? _buildIconData(bool? isPrivate, bool? isFork) {
-    if (isPrivate == true) return Octicons.lock;
-    if (isFork == true) return Octicons.repo_forked;
-    return null;
-  }
+
 
   static IconData _buildGlIconData(String? visibility) {
     switch (visibility) {

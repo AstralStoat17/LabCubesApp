@@ -2,12 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:git_touch/utils/utils.dart';
 
-class LanguageBarItem {
   LanguageBarItem({
     required this.name,
     required this.ratio,
-    String? hexColor,
-  }) : hexColor = hexColor ?? github.languageColors[name!];
+    this.hexColor,
+  });
   String? name;
   String? hexColor;
   double? ratio;
@@ -44,11 +43,12 @@ class LanguageBar extends StatelessWidget {
             spacing: 1,
             children: [
               for (final lang in items)
-                Container(
-                  color: fromCssColor(lang.hexColor!),
-                  width: langWidth * lang.ratio!,
-                  height: 12,
-                )
+                if (lang.hexColor != null)
+                  Container(
+                    color: fromCssColor(lang.hexColor!),
+                    width: langWidth * lang.ratio!,
+                    height: 12,
+                  )
             ],
           ),
         ),
@@ -72,7 +72,7 @@ class LanguageBar extends StatelessWidget {
                     width: 18,
                     height: 18,
                     decoration: BoxDecoration(
-                      color: fromCssColor(edge.hexColor!),
+                      color: edge.hexColor != null ? fromCssColor(edge.hexColor!) : null,
                       shape: BoxShape.circle,
                     ),
                   ),

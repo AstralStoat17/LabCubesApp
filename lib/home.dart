@@ -31,27 +31,6 @@ class _HomeState extends State<Home> {
   @override
   initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 5), () async {
-      final latest = await GitHub()
-          .repositories
-          .getLatestRelease(RepositorySlug.full('git-touch/git-touch'));
-      final current =
-          await PackageInfo.fromPlatform().then((value) => value.version);
-      if (Version.parse(latest.tagName!.substring(1))
-              .compareTo(Version.parse(current)) ==
-          1) {
-        final res = await context.read<ThemeModel>().showConfirm(context,
-            const Text('New version released. Would you like to download it?'));
-        if (res == true) {
-          if (Platform.isIOS) {
-            // go to app store
-            LaunchReview.launch(writeReview: false);
-          } else {
-            context.pushUrl(latest.htmlUrl!);
-          }
-        }
-      }
-    });
   }
 
   _buildScreen(int index) {
