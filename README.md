@@ -18,7 +18,7 @@
 ✅: Done
 
 | Platform | Public service | API documentation | Status |
-| --- | --- | --- | --- |
+| --- | --- | --- | ---- |
 
 | GitLab | https://gitlab.com | [GitLab API v4](https://docs.gitlab.com/ee/api/) | ✅ |
 
