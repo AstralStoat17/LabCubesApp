@@ -1,17 +1,18 @@
-import 'package:antd_mobile/antd_mobile.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:git_touch/models/auth.dart';
-import 'package:git_touch/models/github.dart';
-import 'package:git_touch/models/notification.dart';
+import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/scaffolds/tab_stateful.dart';
-import 'package:git_touch/widgets/empty.dart';
-import 'package:git_touch/widgets/list_group.dart';
-import 'package:git_touch/widgets/notification_item.dart';
+import 'package:git_touch/widgets/app_bar_title.dart';
 import 'package:github/github.dart';
 import 'package:provider/provider.dart';
+import 'package:git_touch/models/notification.dart';
+import 'package:git_touch/models/auth.dart';
+import 'package:git_touch/models/github.dart';
+import '../widgets/notification_item.dart';
+import '../widgets/list_group.dart';
+import '../widgets/empty.dart';
+import '../utils/utils.dart';
+import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GhNotificationScreen extends StatefulWidget {
   @override
@@ -29,21 +30,21 @@ class GhNotificationScreenState extends State<GhNotificationScreen> {
       context.read<NotificationModel>().setCount(ns.length);
     }
 
-    final groupMap = <String, NotificationGroup>{};
+    Map<String, NotificationGroup> _groupMap = {};
 
-    for (final item in ns) {
+    ns.forEach((item) {
       final repo = item.repository!.fullName ?? ''; // TODO: nullable
-      if (groupMap[repo] == null) {
-        groupMap[repo] = NotificationGroup(repo);
+      if (_groupMap[repo] == null) {
+        _groupMap[repo] = NotificationGroup(repo);
       }
 
-      groupMap[repo]!.items.add(item);
-    }
+      _groupMap[repo]!.items.add(item);
+    });
 
-    if (groupMap.isNotEmpty) {
+    if (_groupMap.isNotEmpty) {
       // query state of issues and pull requests
       var schema = '{';
-      groupMap.forEach((repo, group) {
+      _groupMap.forEach((repo, group) {
         // Check if issue and pull request exist
         if (group.items.where((item) {
           return item.subject!.type == 'Issue' ||
@@ -55,7 +56,7 @@ class GhNotificationScreenState extends State<GhNotificationScreen> {
         schema +=
             '${group.key}: repository(owner: "${group.owner}", name: "${group.name}") {';
 
-        for (final item in group.items) {
+        group.items.forEach((item) {
           switch (item.subject!.type) {
             case 'Issue':
               schema += '''
@@ -72,31 +73,31 @@ ${item.key}: pullRequest(number: ${item.subject!.number}) {
 ''';
               break;
           }
-        }
+        });
 
         schema += '}';
       });
       schema += '}';
 
-      if (schema == '{}') return groupMap;
+      if (schema == '{}') return _groupMap;
 
       // Fimber.d(schema);
-      final data = await context.read<AuthModel>().query(schema);
-      groupMap.forEach((repo, group) {
-        for (final item in group.items) {
-          final groupData = data[group.key];
-          if (groupData == null) continue;
+      var data = await context.read<AuthModel>().query(schema);
+      _groupMap.forEach((repo, group) {
+        group.items.forEach((item) {
+          var groupData = data[group.key];
+          if (groupData == null) return;
 
-          final itemData = data[group.key][item.key];
+          var itemData = data[group.key][item.key];
           if (itemData != null) {
             item.state = itemData['state'];
           }
-        }
+        });
       });
       // Fimber.d(data);
     }
 
-    return groupMap;
+    return _groupMap;
   }
 
   Widget _buildGroupItem(
@@ -104,6 +105,7 @@ ${item.key}: pullRequest(number: ${item.subject!.number}) {
     MapEntry<String, NotificationGroup> entry,
     Map<String, NotificationGroup> groupMap,
   ) {
+    final theme = Provider.of<ThemeModel>(context);
     final group = entry.value;
     return ListGroup(
       title: Row(
@@ -114,7 +116,7 @@ ${item.key}: pullRequest(number: ${item.subject!.number}) {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: AntTheme.of(context).colorText,
+              color: theme.palette.text,
             ),
           ),
           GestureDetector(
@@ -129,7 +131,7 @@ ${item.key}: pullRequest(number: ${item.subject!.number}) {
             },
             child: Icon(
               Ionicons.checkmark_done,
-              color: AntTheme.of(context).colorWeak,
+              color: theme.palette.tertiaryText,
               size: 24,
             ),
           ),
@@ -154,7 +156,7 @@ ${item.key}: pullRequest(number: ${item.subject!.number}) {
   @override
   Widget build(context) {
     return TabStatefulScaffold<Map<String, NotificationGroup>>(
-      title: Text(AppLocalizations.of(context)!.notification),
+      title: AppBarTitle(AppLocalizations.of(context)!.notification),
       tabs: [
         AppLocalizations.of(context)!.unread,
         AppLocalizations.of(context)!.participating,
@@ -166,7 +168,7 @@ ${item.key}: pullRequest(number: ${item.subject!.number}) {
 
         return Column(
           children: [
-            const Padding(padding: EdgeInsets.only(top: 10)),
+            Padding(padding: EdgeInsets.only(top: 10)),
             ...groupMap.entries
                 .map((entry) => _buildGroupItem(context, entry, groupMap))
                 .toList()

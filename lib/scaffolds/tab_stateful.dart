@@ -1,24 +1,25 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:git_touch/scaffolds/tab.dart';
 import 'package:git_touch/scaffolds/utils.dart';
 
 class TabStatefulScaffold<T> extends StatefulWidget {
-  const TabStatefulScaffold({
-    required this.title,
-    required this.bodyBuilder,
-    required this.fetchData,
-    required this.tabs,
-    this.actionBuilder,
-  });
   final Widget title;
   final Widget Function(T payload, int activeTab) bodyBuilder;
   final Future<T> Function(int activeTab) fetchData;
   final List<String> tabs;
   final Widget Function(T payload, void Function() refresh)? actionBuilder;
 
+  TabStatefulScaffold({
+    required this.title,
+    required this.bodyBuilder,
+    required this.fetchData,
+    required this.tabs,
+    this.actionBuilder,
+  });
+
   @override
-  State<TabStatefulScaffold<T>> createState() => _TabStatefulScaffoldState();
+  _TabStatefulScaffoldState<T> createState() => _TabStatefulScaffoldState();
 }
 
 class _TabStatefulScaffoldState<T> extends State<TabStatefulScaffold<T>> {
@@ -73,7 +74,7 @@ class _TabStatefulScaffoldState<T> extends State<TabStatefulScaffold<T>> {
       _payload = await widget.fetchData(_activeTab);
     } catch (err) {
       _error = err.toString();
-      rethrow;
+      throw err;
     } finally {
       if (mounted) {
         setState(() {
@@ -89,7 +90,7 @@ class _TabStatefulScaffoldState<T> extends State<TabStatefulScaffold<T>> {
       title: widget.title,
       action: widget.actionBuilder == null
           ? null
-          : widget.actionBuilder!(_payload as T, _refresh),
+          : widget.actionBuilder!(_payload!, _refresh),
       tabs: widget.tabs,
       activeTab: _activeTab,
       onTabSwitch: (selected) async {
@@ -104,7 +105,7 @@ class _TabStatefulScaffoldState<T> extends State<TabStatefulScaffold<T>> {
       },
       onRefresh: _refresh,
       body: ErrorLoadingWrapper(
-        bodyBuilder: () => widget.bodyBuilder(_payload as T, _activeTab),
+        bodyBuilder: () => widget.bodyBuilder(_payload!, _activeTab),
         error: _error,
         loading: _payload == null,
         reload: _refresh,

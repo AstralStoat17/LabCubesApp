@@ -1,25 +1,27 @@
-import 'package:antd_mobile/antd_mobile.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:ferry/ferry.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:git_touch/graphql/github.data.gql.dart';
+import 'package:git_touch/graphql/github.req.gql.dart';
+import 'package:git_touch/graphql/github.var.gql.dart';
 import 'package:git_touch/models/auth.dart';
-import 'package:git_touch/scaffolds/long_list.dart';
+import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/widgets/action_button.dart';
 import 'package:git_touch/widgets/avatar.dart';
-import 'package:git_touch/widgets/comment_item.dart';
 import 'package:git_touch/widgets/link.dart';
 import 'package:git_touch/widgets/timeline_item.dart';
-import 'package:github/github.dart' as github;
-import 'package:gql_github/issue.data.gql.dart';
-import 'package:gql_github/issue.req.gql.dart';
 import 'package:primer/primer.dart';
 import 'package:provider/provider.dart';
+import 'package:github/github.dart' as github;
+import '../scaffolds/long_list.dart';
+import '../widgets/comment_item.dart';
 
 class GhIssueScreen extends StatelessWidget {
-  const GhIssueScreen(this.owner, this.name, this.number);
   final String owner;
   final String name;
   final int number;
+  GhIssueScreen(this.owner, this.name, this.number);
 
   Widget _buildHeader(
     BuildContext context, {
@@ -29,6 +31,7 @@ class GhIssueScreen extends StatelessWidget {
     required Widget body,
     Iterable<Widget> extraWidgets = const [],
   }) {
+    final theme = Provider.of<ThemeModel>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -42,39 +45,39 @@ class GhIssueScreen extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     Avatar(url: avatarUrl, size: AvatarSize.extraSmall),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Text(
                       '$owner / $name',
                       style: TextStyle(
                         fontSize: 17,
-                        color: AntTheme.of(context).colorTextSecondary,
+                        color: theme.palette.secondaryText,
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Text(
                       '#$number',
                       style: TextStyle(
                         fontSize: 17,
-                        color: AntTheme.of(context).colorWeak,
+                        color: theme.palette.tertiaryText,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               StateLabel(status, small: true),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               CommonStyle.border,
               ...extraWidgets,
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               body,
             ],
           ),
@@ -92,7 +95,8 @@ class GhIssueScreen extends StatelessWidget {
       b.vars.number = number;
       b.vars.cursor = cursor;
     });
-    final res = await context.read<AuthModel>().ghGqlClient.request(req).first;
+    OperationResponse<GIssueData, GIssueVars?> res =
+        await context.read<AuthModel>().gqlClient.request(req).first;
     return res.data!.repository!;
   }
 
@@ -133,6 +137,7 @@ class GhIssueScreen extends StatelessWidget {
         }
       },
       headerBuilder: (p) {
+        final theme = Provider.of<ThemeModel>(context);
         if (p.issueOrPullRequest!.G__typename == 'Issue') {
           final issue = p.issueOrPullRequest
               as GIssueData_repository_issueOrPullRequest__asIssue;
@@ -213,37 +218,37 @@ class GhIssueScreen extends StatelessWidget {
             body: CommentItem.gql(pr, pr, (key) {}),
             extraWidgets: [
               LinkWidget(
-                url: '/github/$owner/$name/pull/$number/files',
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding: EdgeInsets.symmetric(vertical: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text('${pr.changedFiles} files changed',
                           style: TextStyle(
-                            color: AntTheme.of(context).colorTextSecondary,
+                            color: theme.palette.secondaryText,
                             fontSize: 17,
                           )),
                       Row(
                         children: <Widget>[
                           Text('+${pr.additions}',
                               style: TextStyle(
-                                color: AntTheme.of(context).colorSuccess,
+                                color: Colors.green,
                                 fontSize: 15,
                               )),
-                          const SizedBox(width: 2),
+                          SizedBox(width: 2),
                           Text('-${pr.deletions}',
                               style: TextStyle(
-                                color: AntTheme.of(context).colorDanger,
+                                color: Colors.red,
                                 fontSize: 15,
                               )),
                           Icon(Ionicons.chevron_forward,
-                              color: AntTheme.of(context).colorBorder),
+                              color: theme.palette.border),
                         ],
                       )
                     ],
                   ),
                 ),
+                url: '/github/$owner/$name/pull/$number/files',
               ),
               CommonStyle.border,
             ],
@@ -275,8 +280,8 @@ class GhIssueScreen extends StatelessWidget {
           );
         }
       },
-      onLoadMore: (cursor) async {
-        final res = await _queryIssue(context, cursor: cursor);
+      onLoadMore: (_cursor) async {
+        final res = await _queryIssue(context, cursor: _cursor);
         if (res.issueOrPullRequest!.G__typename == 'Issue') {
           final issue = res.issueOrPullRequest
               as GIssueData_repository_issueOrPullRequest__asIssue;

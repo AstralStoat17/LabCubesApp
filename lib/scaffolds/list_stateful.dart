@@ -1,28 +1,31 @@
-import 'package:antd_mobile/antd_mobile.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
+import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/scaffolds/common.dart';
 import 'package:git_touch/utils/utils.dart';
-import 'package:git_touch/widgets/empty.dart';
+import 'package:provider/provider.dart';
 import 'package:git_touch/widgets/error_reload.dart';
 import 'package:git_touch/widgets/loading.dart';
-
+import 'package:git_touch/widgets/empty.dart';
 export 'package:git_touch/utils/utils.dart';
 
 // This is a scaffold for infinite scroll screens
 class ListStatefulScaffold<T, K> extends StatefulWidget {
-  const ListStatefulScaffold({
-    required this.title,
-    required this.fetch,
-    required this.itemBuilder,
-    this.actionBuilder,
-  });
   final Widget title;
   final Widget Function()? actionBuilder;
   final Widget Function(T payload) itemBuilder;
   final Future<ListPayload<T, K>> Function(K? cursor) fetch;
 
+  ListStatefulScaffold({
+    required this.title,
+    required this.fetch,
+    required this.itemBuilder,
+    this.actionBuilder,
+  });
+
   @override
-  State<ListStatefulScaffold<T, K>> createState() =>
+  _ListStatefulScaffoldState<T, K> createState() =>
       _ListStatefulScaffoldState();
 }
 
@@ -36,7 +39,7 @@ class _ListStatefulScaffoldState<T, K>
   K? cursor;
   bool? hasMore;
 
-  final ScrollController _controller = ScrollController();
+  ScrollController _controller = ScrollController();
 
   @override
   void initState() {
@@ -66,13 +69,13 @@ class _ListStatefulScaffoldState<T, K>
       loading = true;
     });
     try {
-      final p = await widget.fetch(null);
+      final ListPayload<T, K> p = await widget.fetch(null);
       items = p.items.toList();
       cursor = p.cursor;
       hasMore = p.hasMore;
     } catch (err) {
       error = err.toString();
-      rethrow;
+      throw err;
     } finally {
       if (mounted) {
         setState(() {
@@ -88,13 +91,13 @@ class _ListStatefulScaffoldState<T, K>
       loadingMore = true;
     });
     try {
-      final p = await widget.fetch(cursor);
+      ListPayload<T, K> p = await widget.fetch(cursor);
       items.addAll(p.items);
       cursor = p.cursor;
       hasMore = p.hasMore;
     } catch (err) {
       error = err.toString();
-      rethrow;
+      throw err;
     } finally {
       if (mounted) {
         setState(() {
@@ -104,29 +107,74 @@ class _ListStatefulScaffoldState<T, K>
     }
   }
 
+  Widget _buildItem(BuildContext context, int index) {
+    if (index == 2 * items.length) {
+      if (hasMore != false) {
+        return Loading(more: true);
+      } else {
+        return Container();
+      }
+    } else if (index % 2 == 1) {
+      return CommonStyle.border;
+    } else {
+      return widget.itemBuilder(items[index ~/ 2]);
+    }
+  }
+
   Widget _buildCupertinoSliver() {
     if (error.isNotEmpty) {
       return SliverToBoxAdapter(
         child: ErrorReload(text: error, onTap: _refresh),
       );
     } else if (loading && items.isEmpty) {
-      return const SliverToBoxAdapter(child: Loading(more: false));
+      return SliverToBoxAdapter(child: Loading(more: false));
     } else if (items.isEmpty) {
       return SliverToBoxAdapter(child: EmptyWidget());
     } else {
-      return AntSliverList(
-        count: items.length + 1,
-        itemBuilder: (context, index) {
-          if (index == items.length) {
-            if (hasMore != false) {
-              return const Loading(more: true);
-            } else {
-              return Container();
-            }
-          }
-          return widget.itemBuilder(items[index]);
-        },
+      return SliverList(
+        delegate: SliverChildBuilderDelegate(
+          _buildItem,
+          childCount: 2 * items.length + 1,
+        ),
       );
+    }
+  }
+
+  Widget _buildMaterial() {
+    if (error.isNotEmpty) {
+      return ErrorReload(text: error, onTap: _refresh);
+    } else if (loading && items.isEmpty) {
+      return Loading(more: false);
+    } else if (items.isEmpty) {
+      return EmptyWidget();
+    } else {
+      return Scrollbar(
+        child: ListView.builder(
+          controller: _controller,
+          itemCount: 2 * items.length + 1,
+          itemBuilder: _buildItem,
+        ),
+      );
+    }
+  }
+
+  Widget _buildBody() {
+    switch (Provider.of<ThemeModel>(context).theme) {
+      case AppThemeType.cupertino:
+        return CupertinoScrollbar(
+          child: CustomScrollView(
+            controller: _controller,
+            slivers: [
+              CupertinoSliverRefreshControl(onRefresh: _refresh),
+              _buildCupertinoSliver(),
+            ],
+          ),
+        );
+      default:
+        return RefreshIndicator(
+          onRefresh: _refresh,
+          child: _buildMaterial(),
+        );
     }
   }
 
@@ -134,15 +182,7 @@ class _ListStatefulScaffoldState<T, K>
   Widget build(BuildContext context) {
     return CommonScaffold(
       title: widget.title,
-      body: CupertinoScrollbar(
-        child: CustomScrollView(
-          controller: _controller,
-          slivers: [
-            CupertinoSliverRefreshControl(onRefresh: _refresh),
-            _buildCupertinoSliver(),
-          ],
-        ),
-      ),
+      body: _buildBody(),
       action: widget.actionBuilder?.call(),
     );
   }

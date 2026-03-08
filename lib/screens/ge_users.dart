@@ -1,33 +1,35 @@
-import 'package:flutter/widgets.dart';
-import 'package:git_touch/models/auth.dart';
+import 'package:flutter/material.dart';
 import 'package:git_touch/models/gitee.dart';
 import 'package:git_touch/scaffolds/list_stateful.dart';
+import 'package:git_touch/widgets/app_bar_title.dart';
 import 'package:git_touch/widgets/user_item.dart';
+import 'package:git_touch/models/auth.dart';
 import 'package:provider/provider.dart';
 
 class GeUsersScreen extends StatelessWidget {
-  const GeUsersScreen.followers(String login)
+  final String api;
+  final String title;
+
+  GeUsersScreen.followers(String login)
       : api = '/users/$login/followers',
         title = 'Followers';
-  const GeUsersScreen.following(String login)
+  GeUsersScreen.following(String login)
       : api = '/users/$login/following',
-        title = 'Following';
+        title = "Following";
   // GeUsersScreen.member(String login)
   //     : api = '/orgs/$login/members',
   //       title = "Members";
-  const GeUsersScreen.stargazers(String owner, String repo)
+  GeUsersScreen.stargazers(String owner, String repo)
       : api = '/repos/$owner/$repo/stargazers',
         title = 'Stargazers';
-  const GeUsersScreen.watchers(String owner, String repo)
+  GeUsersScreen.watchers(String owner, String repo)
       : api = '/repos/$owner/$repo/subscribers',
         title = 'Watchers';
-  final String api;
-  final String title;
 
   @override
   Widget build(BuildContext context) {
     return ListStatefulScaffold<GiteeListUser, int>(
-      title: Text(title),
+      title: AppBarTitle(title),
       fetch: (page) async {
         final res =
             await context.read<AuthModel>().fetchGiteeWithPage(api, page: page);

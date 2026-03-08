@@ -1,18 +1,18 @@
-import 'package:antd_mobile/antd_mobile.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
+import 'package:flutter/material.dart';
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/gitlab.dart';
+import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/scaffolds/common.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class GlIssueFormScreen extends StatefulWidget {
-  const GlIssueFormScreen(this.id);
   final int id;
+  GlIssueFormScreen(this.id);
 
   @override
-  State<GlIssueFormScreen> createState() => _GlIssueFormScreenState();
+  _GlIssueFormScreenState createState() => _GlIssueFormScreenState();
 }
 
 class _GlIssueFormScreenState extends State<GlIssueFormScreen> {
@@ -21,16 +21,17 @@ class _GlIssueFormScreenState extends State<GlIssueFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeModel>(context);
     final auth = Provider.of<AuthModel>(context);
     return CommonScaffold(
-      title: Text(AppLocalizations.of(context)!.submitAnIssue),
+      title: Text('Submit an issue'),
       body: Column(
         children: <Widget>[
           Padding(
             padding: CommonStyle.padding,
             child: CupertinoTextField(
-              style: TextStyle(color: AntTheme.of(context).colorText),
-              placeholder: AppLocalizations.of(context)!.title,
+              style: TextStyle(color: theme.palette.text),
+              placeholder: 'Title',
               onChanged: (v) {
                 setState(() {
                   _title = v;
@@ -41,8 +42,8 @@ class _GlIssueFormScreenState extends State<GlIssueFormScreen> {
           Padding(
             padding: CommonStyle.padding,
             child: CupertinoTextField(
-              style: TextStyle(color: AntTheme.of(context).colorText),
-              placeholder: AppLocalizations.of(context)!.body,
+              style: TextStyle(color: theme.palette.text),
+              placeholder: 'Body',
               onChanged: (v) {
                 setState(() {
                   _body = v;
@@ -51,10 +52,9 @@ class _GlIssueFormScreenState extends State<GlIssueFormScreen> {
               maxLines: 10,
             ),
           ),
-          AntButton(
-            color: AntTheme.of(context).colorPrimary,
-            child: Text(AppLocalizations.of(context)!.submit),
-            onClick: () async {
+          CupertinoButton.filled(
+            child: Text('Submit'),
+            onPressed: () async {
               final res = await auth.fetchGitlab(
                 '/projects/${widget.id}/issues',
                 isPost: true,
@@ -62,11 +62,8 @@ class _GlIssueFormScreenState extends State<GlIssueFormScreen> {
               ).then((v) {
                 return GitlabIssue.fromJson(v);
               });
-              await AntToast.show(
+              await theme.push(
                 context,
-                content: const Text('Issue submitted'),
-              );
-              await context.pushUrl(
                 '/gitlab/projects/${widget.id}/issues/${res.iid}',
                 replace: true,
               );

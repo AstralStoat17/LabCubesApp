@@ -1,9 +1,10 @@
-import 'package:antd_mobile/antd_mobile.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:flutter/material.dart';
+import 'package:git_touch/graphql/github.data.gql.dart';
+import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/widgets/avatar.dart';
-import 'package:gql_github/users.data.gql.dart';
+import 'package:git_touch/widgets/link.dart';
+import 'package:provider/provider.dart';
 
 const userGqlChunk = '''
   login
@@ -13,24 +14,36 @@ const userGqlChunk = '''
 ''';
 
 class GhBioWidget extends StatelessWidget {
-  const GhBioWidget({this.location, required this.createdAt});
-  final String? location;
-  final DateTime createdAt;
+  final GUserItem p;
+  const GhBioWidget(this.p);
 
   @override
   Widget build(BuildContext context) {
-    final theme = AntTheme.of(context);
+    final theme = Provider.of<ThemeModel>(context);
 
-    if (location != null) {
+    if (isNotNullOrEmpty(p.company)) {
+      return Row(
+        children: <Widget>[
+          Icon(
+            Octicons.organization,
+            size: 15,
+            color: theme.palette.secondaryText,
+          ),
+          SizedBox(width: 4),
+          Expanded(child: Text(p.company!, overflow: TextOverflow.ellipsis)),
+        ],
+      );
+    }
+    if (isNotNullOrEmpty(p.location)) {
       return Row(
         children: <Widget>[
           Icon(
             Octicons.location,
             size: 15,
-            color: theme.colorTextSecondary,
+            color: theme.palette.secondaryText,
           ),
-          const SizedBox(width: 4),
-          Expanded(child: Text(location!, overflow: TextOverflow.ellipsis)),
+          SizedBox(width: 4),
+          Expanded(child: Text(p.location!, overflow: TextOverflow.ellipsis)),
         ],
       );
     }
@@ -39,11 +52,11 @@ class GhBioWidget extends StatelessWidget {
         Icon(
           Octicons.clock,
           size: 15,
-          color: theme.colorTextSecondary,
+          color: theme.palette.secondaryText,
         ),
-        const SizedBox(width: 4),
+        SizedBox(width: 4),
         Expanded(
-            child: Text('Joined on ${dateFormat.format(createdAt)}',
+            child: Text('Joined on ${dateFormat.format(p.createdAt)}',
                 overflow: TextOverflow.ellipsis)),
       ],
     );
@@ -51,28 +64,27 @@ class GhBioWidget extends StatelessWidget {
 }
 
 class UserItem extends StatelessWidget {
-  const UserItem.github({
+  final String? login;
+  final String? name;
+  final String? avatarUrl;
+  final Widget? bio;
+  final String url;
+
+  UserItem.github({
     required this.login,
     required this.name,
     required this.avatarUrl,
     required this.bio,
   }) : url = '/github/$login';
 
-  UserItem.fromGqlUser(GUserParts p)
+  UserItem.gql(GUserItem p)
       : login = p.login,
         name = p.name,
         avatarUrl = p.avatarUrl,
-        url = '/github/${p.login}',
-        bio = GhBioWidget(location: p.location, createdAt: p.createdAt);
+        url = '/github/' + p.login,
+        bio = GhBioWidget(p);
 
-  UserItem.fromGqlOrg(GOrgParts p)
-      : login = p.login,
-        name = p.name,
-        avatarUrl = p.avatarUrl,
-        url = '/github/${p.login}',
-        bio = GhBioWidget(location: p.location, createdAt: p.createdAt);
-
-  const UserItem.gitlab({
+  UserItem.gitlab({
     required this.login,
     required this.name,
     required this.avatarUrl,
@@ -80,7 +92,7 @@ class UserItem extends StatelessWidget {
     required int? id,
   }) : url = '/gitlab/user/$id';
 
-  const UserItem.gitlabGroup({
+  UserItem.gitlabGroup({
     required this.login,
     required this.name,
     required this.avatarUrl,
@@ -88,86 +100,92 @@ class UserItem extends StatelessWidget {
     required int? id,
   }) : url = '/gitlab/group/$id';
 
-  const UserItem.gitea({
+  UserItem.gitea({
     required this.login,
     required this.name,
     required this.avatarUrl,
     required this.bio,
   }) : url = '/gitea/$login';
 
-  const UserItem.gitee({
+  UserItem.gitee({
     required this.login,
     required this.name,
     required this.avatarUrl,
     required this.bio,
   }) : url = '/gitee/$login';
 
-  const UserItem.bitbucket({
+  UserItem.bitbucket({
     required this.login,
     required this.name,
     required this.avatarUrl,
     required this.bio,
   }) : url = '/bitbucket/$login?team=1';
 
-  const UserItem.gogs({
+  UserItem.gogs({
     required this.login,
     required this.name,
     required this.avatarUrl,
     required this.bio,
   }) : url = '/gogs/$login';
-  final String? login;
-  final String? name;
-  final String? avatarUrl;
-  final Widget? bio;
-  final String url;
 
   @override
   Widget build(BuildContext context) {
-    final theme = AntTheme.of(context);
-
-    return AntListItem(
-      onClick: () {
-        context.pushUrl(url);
-      },
-      child: Row(
-        children: <Widget>[
-          Avatar(url: avatarUrl, size: AvatarSize.large),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: [
-                    if (name != null)
-                      Text(
-                        name!,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
+    final theme = Provider.of<ThemeModel>(context);
+    return LinkWidget(
+      url: url,
+      child: Container(
+        padding: CommonStyle.padding,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Avatar(url: avatarUrl, size: AvatarSize.large),
+            SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    textBaseline: TextBaseline.alphabetic,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    children: <Widget>[
+                      if (name != null && name!.isNotEmpty) ...[
+                        Text(
+                          name!,
+                          style: TextStyle(
+                            color: theme.palette.text,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                      ],
+                      Expanded(
+                        child: Text(
+                          login!,
+                          style: TextStyle(
+                            color: theme.palette.text,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    Expanded(
-                      child: Text(
-                        login!,
-                        style:
-                            TextStyle(fontSize: 16, color: theme.colorPrimary),
-                        overflow: TextOverflow.ellipsis,
+                    ],
+                  ),
+                  SizedBox(height: 6),
+                  if (bio != null)
+                    DefaultTextStyle(
+                      style: TextStyle(
+                        color: theme.palette.secondaryText,
+                        fontSize: 16,
                       ),
-                    ),
-                  ].withSeparator(const SizedBox(width: 8)),
-                ),
-                if (bio != null)
-                  Builder(builder: (context) {
-                    return DefaultTextStyle(
-                      style: DefaultTextStyle.of(context).style.copyWith(
-                          color: theme.colorTextSecondary, fontSize: 16),
                       child: bio!,
-                    );
-                  }),
-              ],
-            ),
-          )
-        ],
+                    ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

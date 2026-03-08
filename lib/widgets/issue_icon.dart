@@ -1,5 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:flutter/material.dart';
 import 'package:git_touch/utils/utils.dart';
 
 enum IssueIconState {
@@ -11,9 +10,10 @@ enum IssueIconState {
 }
 
 class IssueIcon extends StatelessWidget {
-  const IssueIcon(this.state, {this.size});
   final IssueIconState state;
   final double? size;
+
+  IssueIcon(this.state, {this.size});
 
   @override
   Widget build(BuildContext context) {
