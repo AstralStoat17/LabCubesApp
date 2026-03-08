@@ -1,56 +1,41 @@
 import 'package:fimber/fimber.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_highlight/theme_map.dart';
 import 'package:git_touch/utils/utils.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CodeModel with ChangeNotifier {
   static var themes = themeMap.keys.toList();
   static const fontSizes = [12, 13, 14, 15, 16, 17, 18, 19, 20];
-  static final fontFamilies = [
+  static const fontFamilies = [
     'System',
-
-    // https://fonts.google.com/?category=Monospace
-    ...GoogleFonts.asMap().keys.where((element) =>
-        element.endsWith('Mono') ||
-        [
-          'Inconsolata',
-          'Source Code Pro',
-          'Nanum Gothic Coding',
-          'Cousine',
-          'Anonymous Pro',
-          'Courier Prime',
-          'VT323',
-          'Fira Code'
-        ].contains(element)),
+    'JetBrains Mono',
+    'Fira Code',
+    'Inconsolata',
+    'PT Mono',
+    'Source Code Pro',
+    'Ubuntu Mono',
+    'Cascadia Code',
   ];
 
   String _theme = 'vs';
   String _themeDark = 'vs2015';
   int _fontSize = 14;
-  String _fontFamily = 'System';
+  String _fontFamily = 'JetBrains Mono';
 
   String get theme => _theme;
   String get themeDark => _themeDark;
-
   int get fontSize => _fontSize;
   String get fontFamily => _fontFamily;
-  TextStyle get fontStyle {
-    if (_fontFamily == 'System') {
-      return TextStyle(
-          fontFamily: CommonStyle.monospace, fontSize: fontSize.toDouble());
-    } else {
-      return GoogleFonts.getFont(_fontFamily, fontSize: fontSize.toDouble());
-    }
-  }
+  String get fontFamilyUsed =>
+      _fontFamily == 'System' ? CommonStyle.monospace : _fontFamily;
 
   Future<void> init() async {
-    final prefs = await SharedPreferences.getInstance();
-    final vh = prefs.getString(StorageKeys.codeTheme);
-    final vdh = prefs.getString(StorageKeys.codeThemeDark);
-    final vs = prefs.getInt(StorageKeys.iCodeFontSize);
-    final vf = prefs.getString(StorageKeys.codeFontFamily);
+    var prefs = await SharedPreferences.getInstance();
+    var vh = prefs.getString(StorageKeys.codeTheme);
+    var vdh = prefs.getString(StorageKeys.codeThemeDark);
+    var vs = prefs.getInt(StorageKeys.iCodeFontSize);
+    var vf = prefs.getString(StorageKeys.codeFontFamily);
 
     Fimber.d('read code: $vh, $vs, $vf');
     if (themeMap.keys.contains(vh)) {
@@ -70,7 +55,7 @@ class CodeModel with ChangeNotifier {
   }
 
   setTheme(String v) async {
-    final prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
 
     await prefs.setString(StorageKeys.codeTheme, v);
     Fimber.d('write code theme: $v');
@@ -80,7 +65,7 @@ class CodeModel with ChangeNotifier {
   }
 
   setThemeDark(String v) async {
-    final prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
 
     await prefs.setString(StorageKeys.codeThemeDark, v);
     Fimber.d('write code theme dark: $v');
@@ -90,7 +75,7 @@ class CodeModel with ChangeNotifier {
   }
 
   setFontSize(int v) async {
-    final prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
 
     await prefs.setInt(StorageKeys.iCodeFontSize, v);
     Fimber.d('write code font size: $v');
@@ -100,7 +85,7 @@ class CodeModel with ChangeNotifier {
   }
 
   setFontFamily(String v) async {
-    final prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
 
     await prefs.setString(StorageKeys.codeFontFamily, v);
     Fimber.d('write code font family: $v');

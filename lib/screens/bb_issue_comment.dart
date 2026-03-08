@@ -1,19 +1,19 @@
-import 'package:antd_mobile/antd_mobile.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
+import 'package:flutter/material.dart';
 import 'package:git_touch/models/auth.dart';
+import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/scaffolds/common.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class BbIssueCommentScreen extends StatefulWidget {
-  const BbIssueCommentScreen(this.owner, this.name, this.number);
   final String owner;
   final String name;
   final String number;
+  BbIssueCommentScreen(this.owner, this.name, this.number);
 
   @override
-  State<BbIssueCommentScreen> createState() => _BbIssueCommentScreenState();
+  _BbIssueCommentScreenState createState() => _BbIssueCommentScreenState();
 }
 
 class _BbIssueCommentScreenState extends State<BbIssueCommentScreen> {
@@ -21,16 +21,17 @@ class _BbIssueCommentScreenState extends State<BbIssueCommentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeModel>(context);
     final auth = Provider.of<AuthModel>(context);
     return CommonScaffold(
-      title: const Text('New Comment'),
+      title: Text('New Comment'),
       body: Column(
         children: <Widget>[
           Padding(
             padding: CommonStyle.padding,
             child: CupertinoTextField(
-              style: TextStyle(color: AntTheme.of(context).colorText),
-              placeholder: AppLocalizations.of(context)!.body,
+              style: TextStyle(color: theme.palette.text),
+              placeholder: 'Body',
               onChanged: (v) {
                 setState(() {
                   _body = v;
@@ -39,10 +40,9 @@ class _BbIssueCommentScreenState extends State<BbIssueCommentScreen> {
               maxLines: 10,
             ),
           ),
-          AntButton(
-            color: AntTheme.of(context).colorPrimary,
-            child: const Text('Comment'),
-            onClick: () async {
+          CupertinoButton.filled(
+            child: Text('Comment'),
+            onPressed: () async {
               await auth.fetchBb(
                 '/repositories/${widget.owner}/${widget.name}/issues/${widget.number}/comments',
                 isPost: true,
@@ -51,7 +51,8 @@ class _BbIssueCommentScreenState extends State<BbIssueCommentScreen> {
                 },
               );
               Navigator.pop(context, true);
-              await context.pushUrl(
+              await theme.push(
+                context,
                 '/bitbucket/${widget.owner}/${widget.name}/issues/${widget.number}',
                 replace: true,
               );

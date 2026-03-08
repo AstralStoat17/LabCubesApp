@@ -1,26 +1,26 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/bitbucket.dart';
 import 'package:git_touch/scaffolds/refresh_stateful.dart';
-import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/widgets/action_entry.dart';
-import 'package:git_touch/widgets/repo_item.dart';
+import 'package:git_touch/widgets/repository_item.dart';
 import 'package:git_touch/widgets/user_header.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
+import 'package:git_touch/utils/utils.dart';
 
 class BbUserScreen extends StatelessWidget {
-  const BbUserScreen(this.login, {this.isTeam = false});
   final String? login;
   final bool isTeam;
+  BbUserScreen(this.login, {this.isTeam = false});
   bool get isViewer => login == null;
 
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthModel>(context);
-    final accountId = auth.activeAccount!.accountId;
-    final finalLogin = login ?? auth.activeAccount!.login;
+    final _accountId = auth.activeAccount!.accountId;
+    final _login = login ?? auth.activeAccount!.login;
     return RefreshStatefulScaffold<Tuple2<BbUser, Iterable<BbRepo>>>(
       title: Text(isViewer
           ? 'Me'
@@ -30,16 +30,16 @@ class BbUserScreen extends StatelessWidget {
       fetch: () async {
         final res = await Future.wait([
           auth
-              .fetchBbJson('/${isTeam ? 'teams' : 'users'}/$accountId')
+              .fetchBbJson('/${isTeam ? 'teams' : 'users'}/$_accountId')
               .then((value) => BbUser.fromJson(value)),
           auth
-              .fetchBbWithPage('/repositories/$finalLogin')
+              .fetchBbWithPage('/repositories/$_login')
               .then((value) => [for (var v in value.items) BbRepo.fromJson(v)]),
         ]);
         return Tuple2(res[0] as BbUser, res[1] as Iterable<BbRepo>);
       },
       action: isViewer
-          ? const ActionEntry(
+          ? ActionEntry(
               iconData: Ionicons.cog,
               url: '/settings',
             )
@@ -50,7 +50,7 @@ class BbUserScreen extends StatelessWidget {
         return Column(
           children: <Widget>[
             UserHeader(
-              login: finalLogin,
+              login: _login,
               avatarUrl: user.avatarUrl,
               name: user.displayName,
               createdAt: user.createdOn,
@@ -59,7 +59,9 @@ class BbUserScreen extends StatelessWidget {
             ),
             CommonStyle.border,
             Column(
-              children: <Widget>[for (var v in repos) RepoItem.bb(payload: v)],
+              children: <Widget>[
+                for (var v in repos) RepositoryItem.bb(payload: v)
+              ],
             )
           ],
         );

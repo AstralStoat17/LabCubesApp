@@ -1,28 +1,28 @@
-import 'package:antd_mobile/antd_mobile.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
+import 'package:flutter/material.dart';
 import 'package:git_touch/models/auth.dart';
+import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/scaffolds/common.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class GtIssueCommentScreen extends StatefulWidget {
-  const GtIssueCommentScreen(this.owner, this.name, this.number,
-      {this.isPr = false, this.body = '', this.id = ''});
   final String owner;
   final String name;
   final String number;
   final bool isPr;
   final String body;
   final String id;
+  GtIssueCommentScreen(this.owner, this.name, this.number,
+      {this.isPr: false, this.body: '', this.id: ''});
 
   @override
-  State<GtIssueCommentScreen> createState() => _GtIssueCommentScreenState();
+  _GtIssueCommentScreenState createState() => _GtIssueCommentScreenState();
 }
 
 class _GtIssueCommentScreenState extends State<GtIssueCommentScreen> {
   bool isEdit = false;
-  final TextEditingController _controller = TextEditingController();
+  TextEditingController _controller = new TextEditingController();
 
   @override
   void initState() {
@@ -35,6 +35,7 @@ class _GtIssueCommentScreenState extends State<GtIssueCommentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeModel>(context);
     final auth = Provider.of<AuthModel>(context);
     return CommonScaffold(
       title: Text(isEdit ? 'Update Comment' : 'New Comment'),
@@ -44,15 +45,14 @@ class _GtIssueCommentScreenState extends State<GtIssueCommentScreen> {
             padding: CommonStyle.padding,
             child: CupertinoTextField(
               controller: _controller,
-              style: TextStyle(color: AntTheme.of(context).colorText),
-              placeholder: AppLocalizations.of(context)!.body,
+              style: TextStyle(color: theme.palette.text),
+              placeholder: 'Body',
               maxLines: 10,
             ),
           ),
-          AntButton(
-            color: AntTheme.of(context).colorPrimary,
-            child: const Text('Comment'),
-            onClick: () async {
+          CupertinoButton.filled(
+            child: Text('Comment'),
+            onPressed: () async {
               if (!isEdit) {
                 await auth.fetchGitea(
                   '/repos/${widget.owner}/${widget.name}/${widget.isPr ? 'pulls' : 'issues'}/${widget.number}/comments',
@@ -67,7 +67,8 @@ class _GtIssueCommentScreenState extends State<GtIssueCommentScreen> {
                 );
               }
               Navigator.pop(context, '');
-              await context.pushUrl(
+              await theme.push(
+                context,
                 '/gitea/${widget.owner}/${widget.name}/${widget.isPr ? 'pulls' : 'issues'}/${widget.number}',
                 replace: true,
               );

@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="" width="72">
+  <img src="https://raw.githubusercontent.com/pd4d10/git-touch/main/assets/icons/icon.png" width="72">
 </p>
-<h2 align="center">LabCubesApp</h2>
+<h2 align="center">LabCubes</h2>
 <p align="center">
   An open-source app for
-  <a href="https://gitlab.com/">GitLab</a> built with Flutter,
-</p>
+  <a href="https://gitlab.com/">GitLab</a>,
+  built with Flutter
 
 ## Screenshots
 
@@ -15,13 +15,17 @@
 
 ## Supported platforms
 
-✅: Done\
-🚧: Working in progress\
-💬: In review
+✅: Done
 
 | Platform | Public service | API documentation | Status |
 | --- | --- | --- | --- |
+
 | GitLab | https://gitlab.com | [GitLab API v4](https://docs.gitlab.com/ee/api/) | ✅ |
+
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 

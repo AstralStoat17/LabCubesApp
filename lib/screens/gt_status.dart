@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/S.dart';
 import 'package:git_touch/models/auth.dart';
@@ -21,7 +21,7 @@ class GtStatusScreen extends StatelessWidget {
           auth.fetchGitea('/settings/repository'),
           auth.fetchGitea('/settings/ui'),
         ]);
-        return const JsonEncoder.withIndent('  ').convert({
+        return JsonEncoder.withIndent('  ').convert({
           ...res[0],
           'attachment': res[1],
           'api': res[2],

@@ -1,50 +1,52 @@
-import 'package:antd_mobile/antd_mobile.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:git_touch/models/auth.dart';
+import 'package:flutter/material.dart';
 import 'package:git_touch/models/gitea.dart';
 import 'package:git_touch/scaffolds/refresh_stateful.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/widgets/action_button.dart';
 import 'package:git_touch/widgets/action_entry.dart';
 import 'package:git_touch/widgets/avatar.dart';
-import 'package:git_touch/widgets/comment_item.dart';
 import 'package:git_touch/widgets/link.dart';
+import 'package:git_touch/widgets/comment_item.dart';
 import 'package:primer/primer.dart';
 import 'package:provider/provider.dart';
+import 'package:git_touch/models/auth.dart';
+import 'package:git_touch/models/theme.dart';
 import 'package:tuple/tuple.dart';
 
 class GtIssueScreen extends StatelessWidget {
-  const GtIssueScreen(this.owner, this.name, this.number, {this.isPr = false});
   final String owner;
   final String name;
   final String number;
   final bool isPr;
 
+  GtIssueScreen(this.owner, this.name, this.number, {this.isPr: false});
+
   List<ActionItem> _buildCommentActionItem(
       BuildContext context, GiteaComment comment) {
     final auth = context.read<AuthModel>();
+    final theme = context.read<ThemeModel>();
     return [
       ActionItem(
-        text: 'Edit',
-        onTap: (_) {
-          final uri = Uri(
-            path: '/gitea/$owner/$name/issues/$number/comment',
-            queryParameters: {
-              'body': comment.body,
-              'id': comment.id.toString(),
-            },
-          ).toString();
-          context.pushUrl(uri);
-        },
-      ),
+          iconData: Octicons.pencil,
+          text: 'Edit',
+          onTap: (_) {
+            final uri = Uri(
+              path: '/gitea/$owner/$name/issues/$number/comment',
+              queryParameters: {
+                'body': comment.body,
+                'id': comment.id.toString(),
+              },
+            ).toString();
+            theme.push(context, uri);
+          }),
       ActionItem(
+        iconData: Octicons.trashcan,
         text: 'Delete',
         onTap: (_) async {
           await auth.fetchGitea(
               '/repos/$owner/$name/issues/comments/${comment.id}',
               requestType: 'DELETE');
-          await context.pushUrl('/gitea/$owner/$name/issues/$number',
+          await theme.push(context, '/gitea/$owner/$name/issues/$number',
               replace: true);
         },
       ),
@@ -54,7 +56,7 @@ class GtIssueScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold<Tuple2<GiteaIssue, List<GiteaComment>>>(
-      title: Text('Issue: #$number'),
+      title: Text("Issue: #$number"),
       fetch: () async {
         final auth = context.read<AuthModel>();
         final items = await Future.wait([
@@ -71,6 +73,7 @@ class GtIssueScreen extends StatelessWidget {
       bodyBuilder: (data, _) {
         final issue = data.item1;
         final comments = data.item2;
+        final theme = context.read<ThemeModel>();
         return Column(children: <Widget>[
           Container(
               padding: CommonStyle.padding,
@@ -85,47 +88,47 @@ class GtIssueScreen extends StatelessWidget {
                           url: issue.user!.avatarUrl,
                           size: AvatarSize.extraSmall,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4),
                         Text(
                           '$owner / $name',
                           style: TextStyle(
                             fontSize: 17,
-                            color: AntTheme.of(context).colorTextSecondary,
+                            color: theme.palette.secondaryText,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4),
                         Text(
                           '#$number',
                           style: TextStyle(
                             fontSize: 17,
-                            color: AntTheme.of(context).colorWeak,
+                            color: theme.palette.tertiaryText,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text(
                     issue.title!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   StateLabel(
                       issue.state == 'open'
                           ? StateLabelStatus.issueOpened
                           : StateLabelStatus.issueClosed,
                       small: true),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   CommonStyle.border,
                 ],
               )),
           Column(children: [
             for (var comment in comments) ...[
               Padding(
-                  padding: const EdgeInsets.only(left: 10),
+                  padding: EdgeInsets.only(left: 10),
                   child: CommentItem(
                     avatar: Avatar(
                       url: comment.user!.avatarUrl,
@@ -139,7 +142,7 @@ class GtIssueScreen extends StatelessWidget {
                         _buildCommentActionItem(context, comment),
                   )),
               CommonStyle.border,
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
             ],
           ]),
         ]);

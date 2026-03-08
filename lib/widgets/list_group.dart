@@ -1,24 +1,26 @@
-import 'package:antd_mobile/antd_mobile.dart';
-import 'package:flutter/widgets.dart';
-import 'package:git_touch/widgets/empty.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/theme.dart';
+import '../widgets/empty.dart';
 
 class ListGroup<T> extends StatelessWidget {
-  const ListGroup({
-    required this.title,
-    required this.items,
-    required this.itemBuilder,
-    this.padding = const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-  });
   final Widget title;
   final List<T> items;
   final Widget Function(T item, int index) itemBuilder;
   final EdgeInsetsGeometry padding;
 
+  ListGroup({
+    required this.title,
+    required this.items,
+    required this.itemBuilder,
+    this.padding = const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+  });
+
   Widget _buildItem(BuildContext context, MapEntry<int, T> entry) {
+    final theme = Provider.of<ThemeModel>(context);
     return Container(
       decoration: BoxDecoration(
-        border:
-            Border(top: BorderSide(color: AntTheme.of(context).colorBorder)),
+        border: Border(top: BorderSide(color: theme.palette.border)),
       ),
       child: itemBuilder(entry.value, entry.key),
     );
@@ -26,17 +28,18 @@ class ListGroup<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeModel>(context);
     return Container(
       padding: padding,
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: AntTheme.of(context).colorBorder),
-          borderRadius: const BorderRadius.all(Radius.circular(3)),
+          border: Border.all(color: theme.palette.border),
+          borderRadius: BorderRadius.all(Radius.circular(3)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(padding: const EdgeInsets.all(8), child: title),
+            Container(padding: EdgeInsets.all(8), child: title),
             items.isEmpty
                 ? EmptyWidget()
                 : Column(

@@ -1,8 +1,6 @@
 import 'package:fimber/fimber.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:git_touch/models/theme.dart';
-import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/widgets/link.dart';
 import 'package:provider/provider.dart';
 
@@ -15,16 +13,17 @@ class AvatarSize {
 }
 
 class Avatar extends StatelessWidget {
-  const Avatar({
-    required this.url,
-    this.size = AvatarSize.medium,
-    this.linkUrl,
-    this.square = false,
-  });
   final String? url;
   final double size;
   final String? linkUrl;
-  final bool square;
+  final BorderRadius? borderRadius;
+
+  Avatar({
+    required this.url,
+    this.size = AvatarSize.medium,
+    this.linkUrl,
+    this.borderRadius,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class Avatar extends StatelessWidget {
     final fallbackWidget = Image.asset(fallback, width: size, height: size);
 
     final widget = ClipRRect(
-      borderRadius: BorderRadius.circular(square ? 4 : size),
+      borderRadius: borderRadius ?? BorderRadius.circular(size / 2),
       child: url == null
           ? fallbackWidget
           : FadeInImage.assetNetwork(
@@ -44,10 +43,10 @@ class Avatar extends StatelessWidget {
               image: url!,
               width: size,
               height: size,
-              fadeInDuration: const Duration(milliseconds: 200),
-              fadeOutDuration: const Duration(milliseconds: 100),
+              fadeInDuration: Duration(milliseconds: 200),
+              fadeOutDuration: Duration(milliseconds: 100),
               imageErrorBuilder: (_, __, ___) {
-                Fimber.e('image error: ${url!}');
+                Fimber.e('image error: ' + url!);
                 return fallbackWidget;
               },
             ),
@@ -56,7 +55,7 @@ class Avatar extends StatelessWidget {
     return LinkWidget(
       child: widget,
       onTap: () {
-        context.pushUrl(linkUrl!);
+        context.read<ThemeModel>().push(context, linkUrl!);
       },
     );
   }

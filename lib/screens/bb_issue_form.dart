@@ -1,19 +1,19 @@
-import 'package:antd_mobile/antd_mobile.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
+import 'package:flutter/material.dart';
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/bitbucket.dart';
+import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/scaffolds/common.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class BbIssueFormScreen extends StatefulWidget {
-  const BbIssueFormScreen(this.owner, this.name);
   final String owner;
   final String name;
+  BbIssueFormScreen(this.owner, this.name);
 
   @override
-  State<BbIssueFormScreen> createState() => _BbIssueFormScreenState();
+  _BbIssueFormScreenState createState() => _BbIssueFormScreenState();
 }
 
 class _BbIssueFormScreenState extends State<BbIssueFormScreen> {
@@ -22,16 +22,17 @@ class _BbIssueFormScreenState extends State<BbIssueFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeModel>(context);
     final auth = Provider.of<AuthModel>(context);
     return CommonScaffold(
-      title: Text(AppLocalizations.of(context)!.submitAnIssue),
+      title: Text('Submit an issue'),
       body: Column(
         children: <Widget>[
           Padding(
             padding: CommonStyle.padding,
             child: CupertinoTextField(
-              style: TextStyle(color: AntTheme.of(context).colorText),
-              placeholder: AppLocalizations.of(context)!.title,
+              style: TextStyle(color: theme.palette.text),
+              placeholder: 'Title',
               onChanged: (v) {
                 setState(() {
                   _title = v;
@@ -42,8 +43,8 @@ class _BbIssueFormScreenState extends State<BbIssueFormScreen> {
           Padding(
             padding: CommonStyle.padding,
             child: CupertinoTextField(
-              style: TextStyle(color: AntTheme.of(context).colorText),
-              placeholder: AppLocalizations.of(context)!.body,
+              style: TextStyle(color: theme.palette.text),
+              placeholder: 'Body',
               onChanged: (v) {
                 setState(() {
                   _body = v;
@@ -52,10 +53,9 @@ class _BbIssueFormScreenState extends State<BbIssueFormScreen> {
               maxLines: 10,
             ),
           ),
-          AntButton(
-            color: AntTheme.of(context).colorPrimary,
-            child: Text(AppLocalizations.of(context)!.submit),
-            onClick: () async {
+          CupertinoButton.filled(
+            child: Text('Submit'),
+            onPressed: () async {
               await auth.fetchBbJson(
                 '/repositories/${widget.owner}/${widget.name}/issues',
                 isPost: true,
@@ -64,11 +64,8 @@ class _BbIssueFormScreenState extends State<BbIssueFormScreen> {
                 return BbIssues.fromJson(v);
               });
               Navigator.pop(context, true);
-              await AntToast.show(
+              await theme.push(
                 context,
-                content: const Text('Issue submitted'),
-              );
-              await context.pushUrl(
                 '/bitbucket/${widget.owner}/${widget.name}/issues',
                 replace: true,
               );

@@ -1,19 +1,19 @@
-import 'package:antd_mobile/antd_mobile.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
+import 'package:flutter/material.dart';
 import 'package:git_touch/models/auth.dart';
+import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/scaffolds/common.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:github/github.dart';
 import 'package:provider/provider.dart';
 
 class GhIssueFormScreen extends StatefulWidget {
-  const GhIssueFormScreen(this.owner, this.name);
   final String owner;
   final String name;
+  GhIssueFormScreen(this.owner, this.name);
 
   @override
-  State<GhIssueFormScreen> createState() => _GhIssueFormScreenState();
+  _GhIssueFormScreenState createState() => _GhIssueFormScreenState();
 }
 
 class _GhIssueFormScreenState extends State<GhIssueFormScreen> {
@@ -22,15 +22,17 @@ class _GhIssueFormScreenState extends State<GhIssueFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeModel>(context);
+
     return CommonScaffold(
-      title: Text(AppLocalizations.of(context)!.submitAnIssue),
+      title: Text('Submit an issue'),
       body: Column(
         children: <Widget>[
           Padding(
             padding: CommonStyle.padding,
             child: CupertinoTextField(
-              style: TextStyle(color: AntTheme.of(context).colorText),
-              placeholder: AppLocalizations.of(context)!.title,
+              style: TextStyle(color: theme.palette.text),
+              placeholder: 'Title',
               onChanged: (v) {
                 setState(() {
                   _title = v;
@@ -41,8 +43,8 @@ class _GhIssueFormScreenState extends State<GhIssueFormScreen> {
           Padding(
             padding: CommonStyle.padding,
             child: CupertinoTextField(
-              style: TextStyle(color: AntTheme.of(context).colorText),
-              placeholder: AppLocalizations.of(context)!.body,
+              style: TextStyle(color: theme.palette.text),
+              placeholder: 'Body',
               onChanged: (v) {
                 setState(() {
                   _body = v;
@@ -51,21 +53,17 @@ class _GhIssueFormScreenState extends State<GhIssueFormScreen> {
               maxLines: 10,
             ),
           ),
-          AntButton(
-            color: AntTheme.of(context).colorPrimary,
-            child: Text(AppLocalizations.of(context)!.submit),
-            onClick: () async {
+          CupertinoButton.filled(
+            child: Text('Submit'),
+            onPressed: () async {
               final slug = RepositorySlug(widget.owner, widget.name);
               final res = await context
                   .read<AuthModel>()
                   .ghClient
                   .issues
                   .create(slug, IssueRequest(title: _title, body: _body));
-              await AntToast.show(
+              await theme.push(
                 context,
-                content: const Text('Issue submitted'),
-              );
-              await context.pushUrl(
                 '/github/${widget.owner}/${widget.name}/issues/${res.number}',
                 replace: true,
               );
