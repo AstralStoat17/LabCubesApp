@@ -157,7 +157,6 @@ class GlProjectScreen extends StatelessWidget {
             AntList(
               children: [
                 AntListItem(
-                  prefix: const Icon(Octicons.code),
                   extra: p.statistics == null
                       ? null
                       : Text(filesize(p.statistics!.repositorySize)),
@@ -165,41 +164,54 @@ class GlProjectScreen extends StatelessWidget {
                     context.push(
                         '/gitlab/projects/$id/tree/${branch ?? p.defaultBranch}');
                   },
-                  child: FutureBuilder<Map<String, double>>(
-                    future: langFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.data == null) {
-                        return const Text('');
-                      } else {
-                        final langs = snapshot.data!.keys;
-                        return Text(langs.isEmpty
-                            ? 'Code'
-                            : langs.first);
-                      }
-                    },
+                  child: Row(
+                    children: [
+                      const Icon(Octicons.code),
+                      const SizedBox(width: 8),
+                      FutureBuilder<Map<String, double>>(
+                        future: langFuture,
+                        builder: (context, snapshot) {
+                          if (snapshot.data == null) {
+                            return const Text('');
+                          } else {
+                            final langs = snapshot.data!.keys;
+                            return Text(langs.isEmpty ? 'Code' : langs.first);
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 if (p.issuesEnabled!)
                   AntListItem(
-                    prefix: const Icon(Octicons.issue_opened),
                     extra: Text(numberFormat.format(p.openIssuesCount)),
                     onClick: () {
                       context
                           .push('/gitlab/projects/$id/issues?prefix=gitlab');
                     },
-                    child: const Text('Issues'),
+                    child: Row(
+                      children: const [
+                        Icon(Octicons.issue_opened),
+                        SizedBox(width: 8),
+                        Text('Issues'),
+                      ],
+                    ),
                   ),
                 if (p.mergeRequestsEnabled!)
                   AntListItem(
-                    prefix: const Icon(Octicons.git_pull_request),
-                    child: const Text('Merge Requests'),
+                    child: Row(
+                      children: const [
+                        Icon(Octicons.git_pull_request),
+                        SizedBox(width: 8),
+                        Text('Merge Requests'),
+                      ],
+                    ),
                     onClick: () {
                       context.push(
                           '/gitlab/projects/$id/merge_requests?prefix=gitlab');
                     },
                   ),
                 AntListItem(
-                  prefix: const Icon(Octicons.history),
                   extra: p.statistics == null
                       ? null
                       : Text(p.statistics!.commitCount.toString()),
@@ -207,10 +219,15 @@ class GlProjectScreen extends StatelessWidget {
                     context.push(
                         '/gitlab/projects/$id/commits?prefix=$prefix&branch=${branch ?? p.defaultBranch}');
                   },
-                  child: Text('Commits'), // EDIT
+                  child: Row(
+                    children: const [
+                      Icon(Octicons.history),
+                      SizedBox(width: 8),
+                      Text('Commits'),
+                    ],
+                  ),
                 ),
                 AntListItem(
-                  prefix: const Icon(Octicons.git_branch),
                   extra: Text(
                       '${(branch ?? p.defaultBranch) ?? ''} • ${branches.length}'),
                   onClick: () async {
@@ -232,7 +249,13 @@ class GlProjectScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text('Branches'),
+                  child: Row(
+                    children: const [
+                      Icon(Octicons.git_branch),
+                      SizedBox(width: 8),
+                      Text('Branches'),
+                    ],
+                  ),
                 ),
               ],
             ),

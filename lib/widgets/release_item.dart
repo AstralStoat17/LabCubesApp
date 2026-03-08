@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:git_touch/scaffolds/list_stateful.dart';
 import 'package:git_touch/widgets/avatar.dart';
 import 'package:git_touch/widgets/markdown_view.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:git_touch/utils/utils.dart';
 
 class ReleaseItem extends StatefulWidget {
   const ReleaseItem({
@@ -26,8 +25,6 @@ class ReleaseItem extends StatefulWidget {
 }
 
 class _ReleaseItemState extends State<ReleaseItem> {
-  var _isExpanded = false;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -62,7 +59,7 @@ class _ReleaseItemState extends State<ReleaseItem> {
                     fontSize: 16,
                   ),
                   child: Text(
-                      '${widget.login!} ${'Released'} ${timeago.format(widget.publishedAt!)}'),
+                      '${widget.login!} Released ${timeago.format(widget.publishedAt!)}'),
                 ),
               ],
             ),
@@ -74,7 +71,6 @@ class _ReleaseItemState extends State<ReleaseItem> {
           ),
           const SizedBox(height: 10),
         ],
-        ]
       ],
     );
   }

@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:git_touch/models/code.dart';
@@ -134,8 +133,6 @@ class MarkdownFlutterView extends StatelessWidget {
             context.pushUrl(
                 '/${basePaths![0]}/${basePaths![1]}/${basePaths![2]}?path=${y.urlencode}');
           }
-
-
 
           launchStringUrl(url);
         },

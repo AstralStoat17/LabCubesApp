@@ -28,7 +28,6 @@ class LanguageBar extends StatelessWidget {
 
     return CupertinoButton(
       padding: EdgeInsets.zero,
-      minSize: 0,
       onPressed: () async {
         await AntPopup.show(
           context: context,
@@ -54,6 +53,7 @@ class LanguageBar extends StatelessWidget {
           ),
         ),
       ),
+      minimumSize: Size(0, 0),
     );
   }
 
@@ -73,7 +73,9 @@ class LanguageBar extends StatelessWidget {
                     width: 18,
                     height: 18,
                     decoration: BoxDecoration(
-                      color: edge.hexColor != null ? fromCssColor(edge.hexColor!) : null,
+                      color: edge.hexColor != null
+                          ? fromCssColor(edge.hexColor!)
+                          : null,
                       shape: BoxShape.circle,
                     ),
                   ),

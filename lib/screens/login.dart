@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/scaffolds/single.dart';
 import 'package:git_touch/utils/utils.dart';
-import 'package:git_touch/widgets/action_button.dart';
 import 'package:git_touch/widgets/avatar.dart';
 import 'package:git_touch/widgets/loading.dart';
 import 'package:git_touch/widgets/text_field.dart';
@@ -23,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildAccountItem(int index) {
     final auth = Provider.of<AuthModel>(context);
-    final account = auth.accounts![index];
+    final account = auth.accounts[index];
     return Dismissible(
       key: ValueKey(index),
       direction: DismissDirection.endToStart,
@@ -122,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 AntList(
                   children: [
-                    ...List.generate(auth.accounts!.length, _buildAccountItem),
+                    ...List.generate(auth.accounts.length, _buildAccountItem),
                     _buildAddItem(
                       text: 'Gitlab Account',
                       brand: Ionicons.git_branch_outline,

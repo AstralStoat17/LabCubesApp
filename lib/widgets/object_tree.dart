@@ -1,20 +1,6 @@
-import 'package:file_icon/file_icon.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/widgets.dart';
 import 'package:git_touch/utils/utils.dart';
-
-Widget _buildIcon(String type, String name) {
-  switch (type) {
-    case 'blob': // gitlab
-      return FileIcon(name, size: 26); // TODO: size
-    case 'tree': // gitlab
-      return const Icon(AntIcons.folderOutline);
-    case 'commit':
-      return const Icon(AntIcons.fileOutline);
-    default:
-      throw 'object type error';
-  }
-}
 
 AntListItem createObjectTreeItem({
   required String name,

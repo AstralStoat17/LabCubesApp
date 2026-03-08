@@ -10,13 +10,13 @@ class ActionEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
-      minSize: 0,
       padding: EdgeInsets.zero,
       onPressed: () {
         if (onTap != null) onTap!();
         if (url != null) context.pushUrl(url!);
       },
       child: Icon(iconData, size: 22),
+      minimumSize: Size(0, 0),
     );
   }
 }

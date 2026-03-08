@@ -1,19 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/notification.dart';
-import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/screens/gl_explore.dart';
 import 'package:git_touch/screens/gl_groups.dart';
 import 'package:git_touch/screens/gl_search.dart';
-import 'package:git_touch/screens/gl_user.dart';
 import 'package:git_touch/screens/login.dart';
 import 'package:git_touch/utils/utils.dart';
-import 'package:launch_review/launch_review.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:pub_semver/pub_semver.dart';
-import 'package:universal_io/io.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -52,26 +44,6 @@ class _HomeState extends State<Home> {
         }
         break;
     }
-  }
-
-  Widget _buildNotificationIcon(BuildContext context, IconData iconData) {
-    final count = Provider.of<NotificationModel>(context).count;
-    if (count == 0) {
-      return Icon(iconData);
-    }
-
-    // String text = count > 99 ? '99+' : count.toString();
-    return Stack(
-      children: <Widget>[
-        Icon(iconData),
-        Positioned(
-          right: -2,
-          top: -2,
-          child: Icon(Octicons.dot_fill,
-              color: AntTheme.of(context).colorPrimary, size: 14),
-        )
-      ],
-    );
   }
 
   GlobalKey<NavigatorState> getNavigatorKey(int index) {

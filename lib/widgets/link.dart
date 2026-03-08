@@ -14,13 +14,13 @@ class LinkWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Widget w = CupertinoButton(
-      minSize: 0,
       padding: EdgeInsets.zero,
       onPressed: () async {
         if (onTap != null) onTap!();
         if (url != null) context.pushUrl(url!);
       },
       child: child,
+      minimumSize: Size(0, 0),
     );
     return w;
   }

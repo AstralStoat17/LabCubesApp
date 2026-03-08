@@ -51,12 +51,12 @@ class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeModel>(context);
     return CupertinoButton(
-      minSize: 0,
       padding: EdgeInsets.zero,
       onPressed: () async {
         await theme.showActions(context, items);
       },
       child: Icon(iconData, size: 22),
+      minimumSize: Size(0, 0),
     );
   }
 }

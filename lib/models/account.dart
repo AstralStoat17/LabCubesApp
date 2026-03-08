@@ -1,19 +1,35 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class Account {
+  final String platform;
+  final String domain;
+  final String token;
+  final String login;
+  final String avatarUrl;
+  final int? gitlabId;
 
-part 'account.freezed.dart';
+  Account({
+    required this.platform,
+    required this.domain,
+    required this.token,
+    required this.login,
+    required this.avatarUrl,
+    this.gitlabId,
+  });
 
-@freezed
-@JsonSerializable(includeIfNull: false)
-class Account with _$Account {
-  factory Account({
-    required String platform,
-    required String domain,
-    required String token,
-    required String login,
-    required String avatarUrl,
-    int? gitlabId, // For GitLab
-  }) = _Account;
+  factory Account.fromJson(Map<String, dynamic> json) => Account(
+        platform: json['platform'] as String,
+        domain: json['domain'] as String,
+        token: json['token'] as String,
+        login: json['login'] as String,
+        avatarUrl: json['avatarUrl'] as String,
+        gitlabId: json['gitlabId'] as int?,
+      );
 
-  factory Account.fromJson(Map<String, dynamic> json) =>
-      _$AccountFromJson(json);
+  Map<String, dynamic> toJson() => {
+        'platform': platform,
+        'domain': domain,
+        'token': token,
+        'login': login,
+        'avatarUrl': avatarUrl,
+        if (gitlabId != null) 'gitlabId': gitlabId,
+      };
 }
