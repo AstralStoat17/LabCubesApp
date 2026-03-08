@@ -152,7 +152,7 @@ class ThemeModel with ChangeNotifier {
       _markdown = m;
     }
     final l = prefs.getString(StorageKeys.locale);
-    if (AppLocalizations.supportedLocales.any((v) => l == v.toString())) {
+    if (l == 'en') {
       _locale = l;
     }
 

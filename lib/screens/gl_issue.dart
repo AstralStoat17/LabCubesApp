@@ -18,7 +18,7 @@ class GlIssueScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold<
         Tuple3<GitlabTodoTarget, Iterable<GitlabIssueNote>, List?>>(
-      title: Text('${AppLocalizations.of(context)!.issue}#$iid'),
+      title: Text('${'Issue'}#$iid'),
       fetch: () async {
         final type = isMr ? 'merge_requests' : 'issues';
         final auth = context.read<AuthModel>();

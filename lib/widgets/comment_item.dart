@@ -9,7 +9,6 @@ import 'package:git_touch/widgets/avatar.dart';
 import 'package:git_touch/widgets/link.dart';
 import 'package:git_touch/widgets/markdown_view.dart';
 import 'package:git_touch/widgets/user_name.dart';
-import 'package:primer/primer.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -28,19 +27,6 @@ class CommentItem extends StatelessWidget {
     this.commentActionItemList,
   });
 
-  // p.author could be null (deleted user)
-  CommentItem.gql(
-      GCommentParts p, GReactableParts r, EmojiUpdateCallaback onReaction)
-      : avatar = Avatar(
-          url: p.author?.avatarUrl ?? '',
-          linkUrl: '/gitlab/user/${p.author?.login ?? 'ghost'}',
-        ),
-        login = p.author?.login ?? 'ghost',
-        createdAt = p.createdAt,
-        body = p.body,
-        widgets = [],
-        prefix = 'gitlab',
-        commentActionItemList = [];
   final Avatar avatar;
   final String? login;
   final DateTime? createdAt;

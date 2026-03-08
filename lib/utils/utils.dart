@@ -7,8 +7,10 @@ import 'package:primer/primer.dart';
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:git_touch/widgets/ant_components.dart';
 
 export 'extensions.dart';
+export 'package:git_touch/widgets/ant_components.dart';
 
 class StorageKeys {
   @Deprecated('Use `accounts` instead')

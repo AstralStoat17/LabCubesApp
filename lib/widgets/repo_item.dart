@@ -142,8 +142,7 @@ class RepoItem extends StatelessWidget {
                             width: 12,
                             height: 12,
                             decoration: BoxDecoration(
-                              color: fromCssColor(primaryLanguageColor ??
-                                  github.languageColors[primaryLanguageName!]!),
+                              color: fromCssColor(primaryLanguageColor ?? '#000000'),
                               shape: BoxShape.circle,
                             ),
                           ),

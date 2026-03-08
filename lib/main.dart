@@ -8,27 +8,24 @@ import 'package:provider/provider.dart';
 
 
 void main() async {
-    // Init your App.
-    appRunner: () async {
-      final notificationModel = NotificationModel();
-      final themeModel = ThemeModel();
-      final authModel = AuthModel();
-      final codeModel = CodeModel();
-      await Future.wait([
-        themeModel.init(),
-        authModel.init(),
-        codeModel.init(),
-      ]);
+  WidgetsFlutterBinding.ensureInitialized();
+  final notificationModel = NotificationModel();
+  final themeModel = ThemeModel();
+  final authModel = AuthModel();
+  final codeModel = CodeModel();
+  await Future.wait([
+    themeModel.init(),
+    authModel.init(),
+    codeModel.init(),
+  ]);
 
-      runApp(MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => notificationModel),
-          ChangeNotifierProvider(create: (context) => themeModel),
-          ChangeNotifierProvider(create: (context) => authModel),
-          ChangeNotifierProvider(create: (context) => codeModel),
-        ],
-        child: const MyApp(),
-      ));
-    },
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => notificationModel),
+      ChangeNotifierProvider(create: (context) => themeModel),
+      ChangeNotifierProvider(create: (context) => authModel),
+      ChangeNotifierProvider(create: (context) => codeModel),
+    ],
+    child: const MyApp(),
+  ));
 }

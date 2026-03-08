@@ -36,14 +36,14 @@ class MyApp extends StatelessWidget {
     final theme = Provider.of<ThemeModel>(context);
 
     return SingleScaffold(
-      title: Text(AppLocalizations.of(context)!.codeTheme),
+      title: Text('Code Theme'),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           CommonStyle.verticalGap,
           AntList(
             mode: AntListMode.card,
-            header: Text(AppLocalizations.of(context)!.fontStyle),
+            header: Text('Font Style'),
             children: [
               AntListItem(
                 extra: Text(codeProvider.fontSize.toString()),
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(AppLocalizations.of(context)!.fontSize),
+                child: Text('Font Size'),
               ),
               AntListItem(
                 extra: Text(codeProvider.fontFamily),
@@ -80,14 +80,14 @@ class MyApp extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(AppLocalizations.of(context)!.fontFamily),
+                child: Text('Font Family'),
               ),
             ],
           ),
           CommonStyle.verticalGap,
           AntList(
             mode: AntListMode.card,
-            header: Text(AppLocalizations.of(context)!.syntaxHighlighting),
+            header: Text('Syntax Highlighting'),
             children: [
               AntListItem(
                 extra: Text(codeProvider.theme),
@@ -105,7 +105,7 @@ class MyApp extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(AppLocalizations.of(context)!.light),
+                child: Text('Light'),
               ),
               AntListItem(
                 child: HighlightView(
@@ -132,7 +132,7 @@ class MyApp extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(AppLocalizations.of(context)!.dark),
+                child: Text('Dark'),
               ),
               AntListItem(
                 child: HighlightView(

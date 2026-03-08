@@ -13,7 +13,7 @@ class GlStarrersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListStatefulScaffold<GitlabStarrer, int>(
-      title: Text(AppLocalizations.of(context)!.members),
+      title: Text('Members'),
       fetch: (page) async {
         page = page ?? 1;
         final res = await context

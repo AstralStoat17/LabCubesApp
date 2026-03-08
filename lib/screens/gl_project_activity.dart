@@ -13,7 +13,7 @@ class GlProjectActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListStatefulScaffold<GitlabEvent, int>(
-      title: Text(AppLocalizations.of(context)!.activity),
+      title: Text('Activity'),
       fetch: (page) async {
         page = page ?? 1;
         final auth = context.read<AuthModel>();

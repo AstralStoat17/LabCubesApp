@@ -16,7 +16,7 @@ class GlIssuesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListStatefulScaffold<GitlabIssue, int>(
-      title: Text(AppLocalizations.of(context)!.issues),
+      title: Text('Issues'),
       fetch: (page) async {
         page = page ?? 1;
         final auth = context.read<AuthModel>();

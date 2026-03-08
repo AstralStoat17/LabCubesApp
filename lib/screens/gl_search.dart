@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/gitlab.dart';
 import 'package:git_touch/scaffolds/common.dart';
@@ -102,7 +103,7 @@ class _GlSearchScreenState extends State<GlSearchScreen> {
               Icon(Octicons.search, size: 20, color: PrimerColors.gray400),
             ],
           ),
-          placeholder: AppLocalizations.of(context)!.search,
+          placeholder: 'Search',
           clearButtonMode: OverlayVisibilityMode.editing,
           textInputAction: TextInputAction.go,
           onSubmitted: (_) => _query(),

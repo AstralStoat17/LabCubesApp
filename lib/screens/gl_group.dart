@@ -17,7 +17,7 @@ class GlGroupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold<Tuple2<GitlabGroup, int>>(
-      title: Text(AppLocalizations.of(context)!.group),
+      title: Text('Group'),
       fetch: () async {
         final auth = context.read<AuthModel>();
         final res = await Future.wait([

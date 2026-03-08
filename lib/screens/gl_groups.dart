@@ -9,7 +9,7 @@ class GlGroupsScreenn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListStatefulScaffold<GitlabGroup, int>(
-      title: Text(AppLocalizations.of(context)!.groups),
+      title: Text('Groups'),
       fetch: (page) async {
         page = page ?? 1;
         final auth = context.read<AuthModel>();

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:git_touch/widgets/link.dart';
+import 'package:git_touch/utils/utils.dart';
 
 class UserName extends StatelessWidget {
   const UserName(this.login, this.prefix);

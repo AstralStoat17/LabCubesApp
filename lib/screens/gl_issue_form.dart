@@ -21,14 +21,14 @@ class _GlIssueFormScreenState extends State<GlIssueFormScreen> {
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthModel>(context);
     return CommonScaffold(
-      title: Text(AppLocalizations.of(context)!.submitAnIssue),
+      title: Text('Submit An Issue'),
       body: Column(
         children: <Widget>[
           Padding(
             padding: CommonStyle.padding,
             child: CupertinoTextField(
               style: TextStyle(color: AntTheme.of(context).colorText),
-              placeholder: AppLocalizations.of(context)!.title,
+              placeholder: 'Title',
               onChanged: (v) {
                 setState(() {
                   _title = v;
@@ -40,7 +40,7 @@ class _GlIssueFormScreenState extends State<GlIssueFormScreen> {
             padding: CommonStyle.padding,
             child: CupertinoTextField(
               style: TextStyle(color: AntTheme.of(context).colorText),
-              placeholder: AppLocalizations.of(context)!.body,
+              placeholder: 'Body',
               onChanged: (v) {
                 setState(() {
                   _body = v;
@@ -51,7 +51,7 @@ class _GlIssueFormScreenState extends State<GlIssueFormScreen> {
           ),
           AntButton(
             color: AntTheme.of(context).colorPrimary,
-            child: Text(AppLocalizations.of(context)!.submit),
+            child: Text('Submit'),
             onClick: () async {
               final res = await auth.fetchGitlab(
                 '/projects/${widget.id}/issues',

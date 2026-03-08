@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:from_css_color/from_css_color.dart';
 import 'package:git_touch/utils/utils.dart';
 
+class LanguageBarItem {
   LanguageBarItem({
     required this.name,
     required this.ratio,

@@ -3,8 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'account.freezed.dart';
 
 @freezed
+@JsonSerializable(includeIfNull: false)
 class Account with _$Account {
-  @JsonSerializable(includeIfNull: false)
   factory Account({
     required String platform,
     required String domain,

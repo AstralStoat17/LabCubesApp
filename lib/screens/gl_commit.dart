@@ -29,7 +29,7 @@ class GlCommitScreen extends StatelessWidget {
     final theme = Provider.of<ThemeModel>(context);
 
     return RefreshStatefulScaffold<List<GitlabDiff>>(
-      title: Text(AppLocalizations.of(context)!.commits),
+      title: Text('Commits'),
       fetch: () => _query(context),
       bodyBuilder: (items, _) {
         return Column(

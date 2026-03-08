@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/code.dart';
 import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/scaffolds/single.dart';
-import 'package:git_touch/utils/locale.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/widgets/action_button.dart';
 import 'package:go_router/go_router.dart';
@@ -21,13 +19,13 @@ class SettingsScreen extends StatelessWidget {
     final auth = Provider.of<AuthModel>(context);
     final code = Provider.of<CodeModel>(context);
     return SingleScaffold(
-      title: Text(AppLocalizations.of(context)!.settings),
+      title: Text('Settings'),
       body: Column(
         children: <Widget>[
           CommonStyle.verticalGap,
           AntList(
             mode: AntListMode.card,
-            header: Text(AppLocalizations.of(context)!.system),
+            header: Text('System'),
             children: [
               if (auth.activeAccount!.platform == PlatformType.gitlab)
                 AntListItem(
@@ -41,69 +39,36 @@ class SettingsScreen extends StatelessWidget {
                       return Text(snapshot.data ?? '');
                     },
                   ),
-                  child: Text(AppLocalizations.of(context)!.gitlabStatus),
+                  child: Text('Gitlab Status'),
                 ),
               AntListItem(
                 onClick: () {
                   context.push('/login');
                 },
                 extra: Text(auth.activeAccount!.login),
-                child: Text(AppLocalizations.of(context)!.switchAccounts),
+                child: Text('Switch Accounts'),
               ),
-              AntListItem(
-                extra: Text(theme.locale == null
-                    ? AppLocalizations.of(context)!.followSystem
-                    : localeNameMap[theme.locale!] ?? theme.locale!),
-                onClick: () {
-                  // TODO: too many options, better use a new page
-                  theme.showActions(context, [
-                    for (final key in [
-                      null,
-                      ...AppLocalizations.supportedLocales
-                          .map((l) => l.toString())
-                          .where((key) => localeNameMap[key] != null)
-                    ])
-                      ActionItem(
-                        text: key == null
-                            ? AppLocalizations.of(context)!.followSystem
-                            : localeNameMap[key],
-                        onTap: (_) async {
-                          final res = await theme.showConfirm(
-                            context,
-                            const Text(
-                                'The app will reload to make the language setting take effect'),
-                          );
-                          if (res == true && theme.locale != key) {
-                            await theme.setLocale(key);
-                            auth.reloadApp();
-                          }
-                        },
-                      )
-                  ]);
-                },
-                child: Text(AppLocalizations.of(context)!.appLanguage),
-              )
             ],
           ),
           CommonStyle.verticalGap,
           AntList(
             mode: AntListMode.card,
-            header: Text(AppLocalizations.of(context)!.theme),
+            header: Text('Theme'),
             children: [
               AntListItem(
                 extra: Text(theme.brighnessValue == AppBrightnessType.light
-                    ? AppLocalizations.of(context)!.light
+                    ? 'Light'
                     : theme.brighnessValue == AppBrightnessType.dark
-                        ? AppLocalizations.of(context)!.dark
-                        : AppLocalizations.of(context)!.followSystem),
+                        ? 'Dark'
+                        : 'Follow System'),
                 onClick: () {
                   theme.showActions(context, [
                     for (var t in [
-                      Tuple2(AppLocalizations.of(context)!.followSystem,
+                      Tuple2('Follow System',
                           AppBrightnessType.followSystem),
-                      Tuple2(AppLocalizations.of(context)!.light,
+                      Tuple2('Light',
                           AppBrightnessType.light),
-                      Tuple2(AppLocalizations.of(context)!.dark,
+                      Tuple2('Dark',
                           AppBrightnessType.dark),
                     ])
                       ActionItem(
@@ -116,25 +81,25 @@ class SettingsScreen extends StatelessWidget {
                       )
                   ]);
                 },
-                child: Text(AppLocalizations.of(context)!.brightness),
+                child: Text('Brightness'),
               ),
               AntListItem(
                 onClick: () {
                   context.push('/choose-code-theme');
                 },
                 extra: Text('${code.fontFamily}, ${code.fontSize}pt'),
-                child: Text(AppLocalizations.of(context)!.codeTheme),
+                child: Text('Code Theme'),
               ),
               AntListItem(
                 extra: Text(theme.markdown == AppMarkdownType.flutter
-                    ? AppLocalizations.of(context)!.flutter
-                    : AppLocalizations.of(context)!.webview),
+                    ? 'Flutter'
+                    : 'Webview'),
                 onClick: () {
                   theme.showActions(context, [
                     for (var t in [
-                      Tuple2(AppLocalizations.of(context)!.flutter,
+                      Tuple2('Flutter',
                           AppMarkdownType.flutter),
-                      Tuple2(AppLocalizations.of(context)!.webview,
+                      Tuple2('Webview',
                           AppMarkdownType.webview),
                     ])
                       ActionItem(
@@ -147,14 +112,14 @@ class SettingsScreen extends StatelessWidget {
                       )
                   ]);
                 },
-                child: Text(AppLocalizations.of(context)!.markdownRenderEngine),
+                child: Text('Markdown Render Engine'),
               ),
             ],
           ),
           CommonStyle.verticalGap,
           AntList(
             mode: AntListMode.card,
-            header: Text(AppLocalizations.of(context)!.feedback),
+            header: Text('Feedback'),
             children: [
               AntListItem(
                 extra: const Text(''),
@@ -162,10 +127,10 @@ class SettingsScreen extends StatelessWidget {
                   const suffix = '';
                   launchStringUrl('https://github.com/$suffix');
                 },
-                child: Text(AppLocalizations.of(context)!.submitAnIssue),
+                child: Text('Submit An Issue'),
               ),
               AntListItem(
-                child: Text(AppLocalizations.of(context)!.rateThisApp),
+                child: Text('Rate This App'),
                 onClick: () {
                   LaunchReview.launch(
                     androidAppId: '',
@@ -174,19 +139,19 @@ class SettingsScreen extends StatelessWidget {
                 },
               ),
               AntListItem(
-                extra: const Text([EMAIL_ADDRESS]'),
-                arrow: null,
+                extra: const Text('[EMAIL_ADDRESS]'),
+                arrow: const SizedBox(),
                 onClick: () {
                   launchStringUrl('mailto:[EMAIL_ADDRESS]');
                 },
-                child: Text(AppLocalizations.of(context)!.email),
+                child: const Text('Email'),
               ),
             ],
           ),
           CommonStyle.verticalGap,
           AntList(
             mode: AntListMode.card,
-            header: Text(AppLocalizations.of(context)!.about),
+            header: Text('About'),
             children: [
               AntListItem(
                 extra: FutureBuilder<String>(
@@ -196,7 +161,7 @@ class SettingsScreen extends StatelessWidget {
                     return Text(snapshot.data ?? '');
                   },
                 ),
-                child: Text(AppLocalizations.of(context)!.version),
+                child: Text('Version'),
               ),
               AntListItem(
                 extra: const Text('git-touch/git-touch'),
@@ -204,7 +169,7 @@ class SettingsScreen extends StatelessWidget {
                   const suffix = 'git-touch/git-touch';
                   launchStringUrl('https://github.com/$suffix');
                 },
-                child: Text(AppLocalizations.of(context)!.sourceCode),
+                child: Text('Source Code'),
               ),
             ],
           ),

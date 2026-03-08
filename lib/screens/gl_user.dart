@@ -20,8 +20,8 @@ class GlUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold<Tuple2<GitlabUser, Iterable<GitlabProject>>>(
       title: Text(isViewer
-          ? AppLocalizations.of(context)!.me
-          : AppLocalizations.of(context)!.user),
+          ? 'Me'
+          : 'User'),
       fetch: () async {
         final auth = context.read<AuthModel>();
         final finalId = id ?? auth.activeAccount!.gitlabId;

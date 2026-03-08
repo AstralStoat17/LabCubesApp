@@ -34,13 +34,9 @@ class _HomeState extends State<Home> {
   }
 
   _buildScreen(int index) {
-    // print(Localizations.localeOf(context).toString());
-    // return GlProjectScreen(32221);
-    // return GhIssuesScreen('flutter', 'flutter', isPullRequest: true);
-    // return GhIssueScreen('reactjs', 'rfcs', 29);
-    // return GhIssueScreen('reactjs', 'rfcs', 68);
+    // return GlProjectScreen(32221);  
     // return Image.asset('images/spinner.webp', width: 32, height: 32);
-    // return GhRepoScreen('shreyas1599', 'test');
+    
     final auth = Provider.of<AuthModel>(context);
     switch (auth.activeAccount!.platform) {
       case PlatformType.gitlab:
@@ -57,130 +53,113 @@ class _HomeState extends State<Home> {
         break;
     }
   }
-}
 
-Widget _buildNotificationIcon(BuildContext context, IconData iconData) {
-  final count = Provider.of<NotificationModel>(context).count;
-  if (count == 0) {
-    return Icon(iconData);
+  Widget _buildNotificationIcon(BuildContext context, IconData iconData) {
+    final count = Provider.of<NotificationModel>(context).count;
+    if (count == 0) {
+      return Icon(iconData);
+    }
+
+    // String text = count > 99 ? '99+' : count.toString();
+    return Stack(
+      children: <Widget>[
+        Icon(iconData),
+        Positioned(
+          right: -2,
+          top: -2,
+          child: Icon(Octicons.dot_fill,
+              color: AntTheme.of(context).colorPrimary, size: 14),
+        )
+      ],
+    );
   }
 
-  // String text = count > 99 ? '99+' : count.toString();
-  return Stack(
-    children: <Widget>[
-      Icon(iconData),
-      Positioned(
-        right: -2,
-        top: -2,
-        child: Icon(Octicons.dot_fill,
-            color: AntTheme.of(context).colorPrimary, size: 14),
-      )
-    ],
-  );
-}
-
-GlobalKey<NavigatorState> getNavigatorKey(int index) {
-  switch (index) {
-    case 0:
-      return tab1;
-    case 1:
-      return tab2;
-    case 2:
-      return tab3;
-    case 3:
-      return tab4;
-    case 4:
-      return tab5;
-  }
-  return tab1;
-}
-
-List<BottomNavigationBarItem> _buildNavigationItems(String platform) {
-  final search = BottomNavigationBarItem(
-    icon: const Icon(Ionicons.search_outline),
-    activeIcon: const Icon(Ionicons.search),
-    label: AppLocalizations.of(context)!.search,
-  );
-  final group = BottomNavigationBarItem(
-    icon: const Icon(Ionicons.people_outline),
-    activeIcon: const Icon(Ionicons.people),
-    label: AppLocalizations.of(context)!.organizations,
-  );
-  final me = BottomNavigationBarItem(
-    icon: const Icon(Ionicons.person_outline),
-    activeIcon: const Icon(Ionicons.person),
-    label: AppLocalizations.of(context)!.me,
-  );
-  final explore = BottomNavigationBarItem(
-    icon: const Icon(Ionicons.compass_outline),
-    activeIcon: const Icon(Ionicons.compass),
-    label: AppLocalizations.of(context)!.explore,
-  );
-
-  switch (platform) {
-    case PlatformType.github:
-      return [
-        BottomNavigationBarItem(
-          icon: const Icon(Ionicons.newspaper_outline),
-          activeIcon: const Icon(Ionicons.newspaper),
-          label: AppLocalizations.of(context)!.news,
-        ),
-        BottomNavigationBarItem(
-          icon: _buildNotificationIcon(context, Ionicons.notifications_outline),
-          activeIcon: _buildNotificationIcon(context, Ionicons.notifications),
-          label: AppLocalizations.of(context)!.notification,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(Ionicons.flame_outline),
-          activeIcon: const Icon(Ionicons.flame),
-          label: AppLocalizations.of(context)!.trending,
-        ),
-        search,
-        me,
-      ];
-    case PlatformType.gitlab:
-      return [explore, group, search, me];
-    default:
-      return [];
-  }
-}
-
-@override
-Widget build(BuildContext context) {
-  final auth = Provider.of<AuthModel>(context);
-
-  if (auth.activeAccount == null) {
-    return LoginScreen();
+  GlobalKey<NavigatorState> getNavigatorKey(int index) {
+    switch (index) {
+      case 0:
+        return tab1;
+      case 1:
+        return tab2;
+      case 2:
+        return tab3;
+      case 3:
+        return tab4;
+      case 4:
+        return tab5;
+    }
+    return tab1;
   }
 
-  final navigationItems = _buildNavigationItems(auth.activeAccount!.platform);
+  List<BottomNavigationBarItem> _buildNavigationItems(String platform) {
+    final search = BottomNavigationBarItem(
+      icon: const Icon(Ionicons.search_outline),
+      activeIcon: const Icon(Ionicons.search),
+      label: 'Search',
+    );
+    final group = BottomNavigationBarItem(
+      icon: const Icon(Ionicons.people_outline),
+      activeIcon: const Icon(Ionicons.people),
+      label: 'Organizations',
+    );
+    final me = BottomNavigationBarItem(
+      icon: const Icon(Ionicons.person_outline),
+      activeIcon: const Icon(Ionicons.person),
+      label: 'Me',
+    );
+    final explore = BottomNavigationBarItem(
+      icon: const Icon(Ionicons.compass_outline),
+      activeIcon: const Icon(Ionicons.compass),
+      label: 'Explore',
+    );
 
-  return WillPopScope(
-    onWillPop: () async {
-      return !(await getNavigatorKey(auth.activeTab).currentState?.maybePop())!;
-    },
-    child: CupertinoTabScaffold(
-      tabBuilder: (context, index) {
-        return CupertinoTabView(
-          navigatorKey: getNavigatorKey(index),
-          builder: (context) {
-            return _buildScreen(index);
-          },
-        );
+    switch (platform) {
+      case PlatformType.gitlab:
+        return [explore, group, search, me];
+      default:
+        return [];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = Provider.of<AuthModel>(context);
+
+    if (auth.activeAccount == null) {
+      return LoginScreen();
+    }
+
+    final navigationItems = _buildNavigationItems(auth.activeAccount!.platform);
+
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, dynamic result) async {
+        if (didPop) return;
+        final NavigatorState? navigator = getNavigatorKey(auth.activeTab).currentState;
+        if (navigator != null && await navigator.maybePop()) {
+          return;
+        }
       },
-      tabBar: CupertinoTabBar(
-        items: navigationItems,
-        currentIndex: auth.activeTab,
-        onTap: (index) {
-          if (auth.activeTab == index) {
-            getNavigatorKey(index)
-                .currentState
-                ?.popUntil((route) => route.isFirst);
-          } else {
-            auth.setActiveTab(index);
-          }
+      child: CupertinoTabScaffold(
+        tabBuilder: (context, index) {
+          return CupertinoTabView(
+            navigatorKey: getNavigatorKey(index),
+            builder: (context) {
+              return _buildScreen(index);
+            },
+          );
         },
+        tabBar: CupertinoTabBar(
+          items: navigationItems,
+          currentIndex: auth.activeTab,
+          onTap: (index) {
+            if (auth.activeTab == index) {
+              getNavigatorKey(index).currentState?.popUntil((route) => route.isFirst);
+            } else {
+              auth.setActiveTab(index);
+            }
+          },
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

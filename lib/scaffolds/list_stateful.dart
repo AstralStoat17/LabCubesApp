@@ -113,18 +113,20 @@ class _ListStatefulScaffoldState<T, K>
     } else if (items.isEmpty) {
       return SliverToBoxAdapter(child: EmptyWidget());
     } else {
-      return AntSliverList(
-        count: items.length + 1,
-        itemBuilder: (context, index) {
-          if (index == items.length) {
-            if (hasMore != false) {
-              return const Loading(more: true);
-            } else {
-              return Container();
+      return SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            if (index == items.length) {
+              if (hasMore != false) {
+                return const Loading(more: true);
+              } else {
+                return Container();
+              }
             }
-          }
-          return widget.itemBuilder(items[index]);
-        },
+            return widget.itemBuilder(items[index]);
+          },
+          childCount: items.length + 1,
+        ),
       );
     }
   }

@@ -28,9 +28,40 @@ class DataWithPage<T> {
 }
 
 class AuthModel with ChangeNotifier {
+  bool loading = false;
+  List<Account> _accounts = [];
+  int? activeAccountIndex;
 
+  List<Account> get accounts => _accounts;
+  Account? get activeAccount => activeAccountIndex != null && activeAccountIndex! < _accounts.length ? _accounts[activeAccountIndex!] : null;
+  String? get token => activeAccount?.token;
 
-  Future<void> loginToGitlab(String domain, String token) async {
+  Future<void> _addAccount(Account account) async {
+    _accounts.add(account);
+    activeAccountIndex = _accounts.length - 1;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(StorageKeys.accounts, json.encode(_accounts.map((e) => e.toJson()).toList()));
+    await setDefaultAccount(activeAccountIndex!);
+    notifyListeners();
+  }
+
+  Future<void> removeAccount(int index) async {
+    _accounts.removeAt(index);
+    if (_accounts.isEmpty) {
+      activeAccountIndex = null;
+    } else if (activeAccountIndex! >= index) {
+      activeAccountIndex = activeAccountIndex! - 1;
+      if (activeAccountIndex! < 0) activeAccountIndex = 0;
+    }
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(StorageKeys.accounts, json.encode(_accounts.map((e) => e.toJson()).toList()));
+    if (activeAccountIndex != null) {
+      await setDefaultAccount(activeAccountIndex!);
+    } else {
+      await prefs.remove(StorageKeys.iDefaultAccount);
+    }
+    notifyListeners();
+  }  Future<void> loginToGitlab(String domain, String token) async {
     domain = domain.trim();
     token = token.trim();
     loading = true;
@@ -45,7 +76,7 @@ class AuthModel with ChangeNotifier {
       if (info['error'] != null) {
         throw info['error'] + '. ' + (info['error_description'] ?? '');
       }
-      final user = GitlabUser.fromJson(info);
+      final user = GitlabUser.fromJson(info as Map<String, dynamic>);
       await _addAccount(Account(
         platform: PlatformType.gitlab,
         domain: domain,
@@ -61,7 +92,7 @@ class AuthModel with ChangeNotifier {
   }
 
   Future<String> fetchWithGitlabToken(String p) async {
-    final res = await http.get(Uri.parse(p), headers: {'Private-Token': token});
+    final res = await http.get(Uri.parse(p), headers: {'Private-Token': token ?? ''});
     return res.body;
   }
 
@@ -72,14 +103,14 @@ class AuthModel with ChangeNotifier {
       res = await http.post(
         Uri.parse('${activeAccount!.domain}/api/v4$p'),
         headers: {
-          'Private-Token': token,
+          'Private-Token': token ?? '',
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: jsonEncode(body),
       );
     } else {
       res = await http.get(Uri.parse('${activeAccount!.domain}/api/v4$p'),
-          headers: {'Private-Token': token});
+          headers: {'Private-Token': token ?? ''});
     }
     final info = json.decode(utf8.decode(res.bodyBytes));
     if (info is Map && info['message'] != null) throw info['message'];
@@ -88,7 +119,7 @@ class AuthModel with ChangeNotifier {
 
   Future<DataWithPage> fetchGitlabWithPage(String p) async {
     final res = await http.get(Uri.parse('${activeAccount!.domain}/api/v4$p'),
-        headers: {'Private-Token': token});
+        headers: {'Private-Token': token ?? ''});
     final next = int.tryParse(
         res.headers['X-Next-Pages'] ?? res.headers['x-next-page'] ?? '');
     final info = json.decode(utf8.decode(res.bodyBytes));
@@ -132,7 +163,10 @@ class AuthModel with ChangeNotifier {
     notifyListeners();
   }
 
+  @override
+  void dispose() {
     super.dispose();
+  }
 
   Future<void> setDefaultAccount(int v) async {
     final prefs = await SharedPreferences.getInstance();

@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Align(
           alignment: Alignment.centerRight,
           child: Text(
-            AppLocalizations.of(context)!.removeAccount,
+            'Remove Account',
             style: TextStyle(
               fontSize: 16,
               color: AntTheme.of(context).colorBackground,
@@ -49,12 +49,22 @@ class _LoginScreenState extends State<LoginScreen> {
           auth.setActiveAccountAndReload(index);
         },
         arrow: null,
-        prefix: Avatar(url: account.avatarUrl),
         extra: index == auth.activeAccountIndex
             ? const Icon(Ionicons.checkmark)
             : null,
-        description: Text(account.domain),
-        child: Text(account.login),
+        child: Row(
+          children: [
+            Avatar(url: account.avatarUrl),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(account.login),
+                Text(account.domain, style: TextStyle(fontSize: 12, color: AntTheme.of(context).colorTextSecondary)),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -97,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void showError(err) {
     context.read<ThemeModel>().showConfirm(context,
-        Text('${AppLocalizations.of(context)!.somethingBadHappens}$err'));
+        Text('${'Something Bad Happens'}$err'));
   }
 
   @override
@@ -105,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final auth = Provider.of<AuthModel>(context);
     final theme = Provider.of<ThemeModel>(context);
     return SingleScaffold(
-      title: Text(AppLocalizations.of(context)!.selectAccount),
+      title: Text('Select Account'),
       body: auth.loading
           ? const Center(child: Loading())
           : Column(
@@ -114,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     ...List.generate(auth.accounts!.length, _buildAccountItem),
                     _buildAddItem(
-                      text: AppLocalizations.of(context)!.gitlabAccount,
+                      text: 'Gitlab Account',
                       brand: Ionicons.git_branch_outline,
                       onTap: () async {
                         _domainController.text = 'https://gitlab.com';
@@ -124,10 +134,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             context,
                             showDomain: true,
                             notes: [
-                              Text(
-                                AppLocalizations.of(context)!
-                                    .permissionRequiredMessage,
-                                style: const TextStyle(
+                              const Text(
+                                'Personal access token is required',
+                                style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w400),
                               ),
                               const SizedBox(height: 8),

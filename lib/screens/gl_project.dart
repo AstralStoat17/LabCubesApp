@@ -26,7 +26,7 @@ class GlProjectScreen extends StatelessWidget {
     return RefreshStatefulScaffold<
         Tuple5<GitlabProject, Future<Map<String, double>>, Future<int>,
             MarkdownViewData?, List<GitlabBranch>>>(
-      title: Text(AppLocalizations.of(context)!.project),
+      title: Text('Project'),
       fetch: () async {
         final auth = context.read<AuthModel>();
         final p =
@@ -75,7 +75,7 @@ class GlProjectScreen extends StatelessWidget {
       },
       actionBuilder: (t, _) {
         return ActionButton(
-          title: AppLocalizations.of(context)!.projectActions,
+          title: 'Project Actions',
           items: [
             ...ActionItem.getUrlActions(t.item1.webUrl),
           ],
@@ -120,19 +120,19 @@ class GlProjectScreen extends StatelessWidget {
                   builder: (context, snapshot) {
                     return EntryItem(
                       count: snapshot.data!,
-                      text: AppLocalizations.of(context)!.members,
+                      text: 'Members',
                       url: '/gitlab/projects/$id/members',
                     );
                   },
                 ),
                 EntryItem(
                   count: p.starCount!,
-                  text: AppLocalizations.of(context)!.stars,
+                  text: 'Stars',
                   url: '/gitlab/projects/$id/starrers',
                 ),
                 EntryItem(
                   count: p.forksCount!,
-                  text: AppLocalizations.of(context)!.forks, // TODO:
+                  text: 'Forks', // TODO:
                 ),
               ],
             ),
@@ -173,7 +173,7 @@ class GlProjectScreen extends StatelessWidget {
                       } else {
                         final langs = snapshot.data!.keys;
                         return Text(langs.isEmpty
-                            ? AppLocalizations.of(context)!.code
+                            ? 'Code'
                             : langs.first);
                       }
                     },
@@ -185,17 +185,17 @@ class GlProjectScreen extends StatelessWidget {
                     extra: Text(numberFormat.format(p.openIssuesCount)),
                     onClick: () {
                       context
-                          .push('/gitlab/projects/$id/issues?prefix=$prefix');
+                          .push('/gitlab/projects/$id/issues?prefix=gitlab');
                     },
-                    child: Text(AppLocalizations.of(context)!.issues),
+                    child: const Text('Issues'),
                   ),
                 if (p.mergeRequestsEnabled!)
                   AntListItem(
                     prefix: const Icon(Octicons.git_pull_request),
-                    child: Text(AppLocalizations.of(context)!.mergeRequests),
+                    child: const Text('Merge Requests'),
                     onClick: () {
                       context.push(
-                          '/gitlab/projects/$id/merge_requests?prefix=$prefix');
+                          '/gitlab/projects/$id/merge_requests?prefix=gitlab');
                     },
                   ),
                 AntListItem(
@@ -207,7 +207,7 @@ class GlProjectScreen extends StatelessWidget {
                     context.push(
                         '/gitlab/projects/$id/commits?prefix=$prefix&branch=${branch ?? p.defaultBranch}');
                   },
-                  child: Text(AppLocalizations.of(context)!.commits), // EDIT
+                  child: Text('Commits'), // EDIT
                 ),
                 AntListItem(
                   prefix: const Icon(Octicons.git_branch),
@@ -232,7 +232,7 @@ class GlProjectScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text(AppLocalizations.of(context)!.branches),
+                  child: Text('Branches'),
                 ),
               ],
             ),

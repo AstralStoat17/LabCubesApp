@@ -24,7 +24,6 @@ AntListItem createObjectTreeItem({
   int? size,
 }) {
   return AntListItem(
-    prefix: _buildIcon(type, name),
     extra: size == null ? null : Text(filesize(size)),
     onClick: () async {
       final finalUrl = [

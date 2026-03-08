@@ -35,13 +35,7 @@ final router = GoRouter(
         GoRoute(
           path: 'settings',
           builder: (context, state) => SettingsScreen(),
-
-            ),
-          ],
         ),
-
-
-
         // gitlab
         GoRoute(
           path: 'gitlab',
@@ -111,34 +105,38 @@ final router = GoRouter(
                   ),
                 ),
                 GoRoute(
-                    path: 'issues',
-                    builder: (context, state) => GlIssuesScreen(
-                          state.params['id']!,
-                          prefix: state.queryParams['prefix'],
-                        ),
-                    routes: [
-                      GoRoute(
-                        path: 'new',
-                        builder: (context, state) => GlIssueFormScreen(
-                          int.parse(state.params['id']!),
-                        ),
+                  path: 'issues',
+                  builder: (context, state) => GlIssuesScreen(
+                    state.params['id']!,
+                    prefix: state.queryParams['prefix'],
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'new',
+                      builder: (context, state) => GlIssueFormScreen(
+                        int.parse(state.params['id']!),
                       ),
-                      GoRoute(
-                        path: ':iid',
-                        builder: (context, state) => GlIssueScreen(
-                          int.parse(state.params['id']!),
-                          int.parse(state.params['iid']!),
-                        ),
+                    ),
+                    GoRoute(
+                      path: ':iid',
+                      builder: (context, state) => GlIssueScreen(
+                        int.parse(state.params['id']!),
+                        int.parse(state.params['iid']!),
                       ),
-                    ]),
+                    ),
+                  ],
+                ),
                 GoRoute(
                   path: 'merge_requests',
                   builder: (context, state) => GlMergeRequestsScreen(
                     state.params['id']!,
-                    prefix: state.queryParams['prefix'],
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
+      ],
+    ),
+  ],
+);

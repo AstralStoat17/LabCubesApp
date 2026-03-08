@@ -13,7 +13,6 @@ class ReleaseItem extends StatefulWidget {
     required this.tagName,
     required this.avatarUrl,
     required this.description,
-    this.releaseAssets,
   });
   final String? login;
   final DateTime? publishedAt;
@@ -21,7 +20,6 @@ class ReleaseItem extends StatefulWidget {
   final String? avatarUrl;
   final String? tagName;
   final String? description;
-  final GReleasesData_repository_releases_nodes_releaseAssets? releaseAssets;
 
   @override
   State<ReleaseItem> createState() => _ReleaseItemState();
@@ -64,7 +62,7 @@ class _ReleaseItemState extends State<ReleaseItem> {
                     fontSize: 16,
                   ),
                   child: Text(
-                      '${widget.login!} ${AppLocalizations.of(context)!.released} ${timeago.format(widget.publishedAt!)}'),
+                      '${widget.login!} ${'Released'} ${timeago.format(widget.publishedAt!)}'),
                 ),
               ],
             ),
@@ -76,41 +74,7 @@ class _ReleaseItemState extends State<ReleaseItem> {
           ),
           const SizedBox(height: 10),
         ],
-        AntCollapse(
-          activeKey: _isExpanded ? {''} : {},
-          onChange: (_) {
-            setState(() {
-              _isExpanded = !_isExpanded;
-            });
-          },
-          panels: [
-            AntCollapsePanel(
-              key: '',
-              title:
-                  Text('Assets (${widget.releaseAssets?.nodes?.length ?? 0})'),
-              child: AntList(
-                children: [
-                  if (widget.releaseAssets != null)
-                    for (var asset in widget.releaseAssets!.nodes!)
-                      AntListItem(
-                        arrow: const Icon(Ionicons.download_outline),
-                        child: Text(
-                          asset.name,
-                          style: TextStyle(
-                            color: AntTheme.of(context).colorPrimary,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        onClick: () {
-                          context.pushUrl(asset.downloadUrl);
-                        },
-                      ),
-                ],
-              ),
-            ),
-          ],
-        )
+        ]
       ],
     );
   }
