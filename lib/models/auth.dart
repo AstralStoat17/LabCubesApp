@@ -338,7 +338,6 @@ class AuthModel with ChangeNotifier {
     }
   }
 
-  // TODO: refactor
   Future fetchGogs(
     String p, {
     requestType = 'GET',
@@ -671,7 +670,6 @@ class AuthModel with ChangeNotifier {
     _gqlClient = null;
     notifyListeners();
 
-    // TODO: strategy
     // waiting for 1min to request review
     // if (!hasRequestedReview) {
     //   hasRequestedReview = true;

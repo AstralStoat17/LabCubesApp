@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GlUserScreen extends StatelessWidget {
   final int? id;
@@ -20,9 +19,7 @@ class GlUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold<Tuple2<GitlabUser, Iterable<GitlabProject>>>(
-      title: Text(isViewer
-          ? AppLocalizations.of(context)!.me
-          : AppLocalizations.of(context)!.user),
+      title: Text(isViewer ? "me" : "user"),
       fetch: () async {
         final auth = context.read<AuthModel>();
         final _id = id ?? auth.activeAccount!.gitlabId;

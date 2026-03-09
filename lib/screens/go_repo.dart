@@ -13,7 +13,6 @@ import 'package:git_touch/widgets/table_view.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GoRepoScreen extends StatelessWidget {
   final String owner;
@@ -25,7 +24,7 @@ class GoRepoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold<
         Tuple3<GogsRepository, MarkdownViewData, List<GogsBranch>>>(
-      title: AppBarTitle(AppLocalizations.of(context)!.repository),
+      title: AppBarTitle("repository"),
       fetch: () async {
         final auth = context.read<AuthModel>();
         final repo = await auth.fetchGogs('/repos/$owner/$name').then((v) {
@@ -72,7 +71,6 @@ class GoRepoScreen extends StatelessWidget {
             CommonStyle.border,
             Row(
               children: <Widget>[
-                // TODO: when API is available
                 EntryItem(
                   count: p.watchersCount,
                   text: 'Watchers',
@@ -102,8 +100,7 @@ class GoRepoScreen extends StatelessWidget {
                 ),
                 TableViewItem(
                   leftIconData: Octicons.git_pull_request,
-                  text: Text(
-                      'Pull requests'), // TODO: when API endpoint is available
+                  text: Text('Pull requests'),
                 ),
                 TableViewItem(
                   leftIconData: Octicons.history,
@@ -112,7 +109,7 @@ class GoRepoScreen extends StatelessWidget {
                 ),
                 TableViewItem(
                   leftIconData: Octicons.git_branch,
-                  text: Text(AppLocalizations.of(context)!.branches),
+                  text: Text("branches"),
                   rightWidget: Text((branch ?? 'master') +
                       ' • ' +
                       '${branches.length.toString()}'),

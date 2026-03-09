@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -167,7 +166,6 @@ class _LongListStatefulScaffoldState<T, K>
       return SliverToBoxAdapter(
           child: ErrorReload(text: error, onTap: _refresh));
     } else if (loading) {
-      // TODO:
       return SliverToBoxAdapter(child: Loading(more: false));
     } else {
       return SliverList(

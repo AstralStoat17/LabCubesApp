@@ -201,7 +201,7 @@ class GtUserScreen extends StatelessWidget {
             ],
           );
         } else {
-          return Text('404'); // TODO:
+          return Text('404');
         }
       },
     );

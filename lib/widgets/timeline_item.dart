@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:git_touch/graphql/github.data.gql.dart';
 import 'package:git_touch/graphql/schema.schema.gql.dart';
 import 'package:git_touch/models/theme.dart';
@@ -40,7 +39,6 @@ class TimelineEventItem extends StatelessWidget {
             TextSpan(
               style: TextStyle(color: theme.palette.text, fontSize: 16),
               children: [
-                // TODO: actor is null
                 createUserSpan(context, actor),
                 textSpan!,
                 // TextSpan(text: ' ' + TimeAgo.formatFromString(item['createdAt']))
@@ -133,7 +131,7 @@ class TimelineItem extends StatelessWidget {
         );
       case 'ReferencedEvent':
         final p = node as GReferencedEventParts;
-        // TODO: isCrossRepository
+
         if (p.commit == null) {
           return Container();
         }
@@ -272,7 +270,7 @@ class TimelineItem extends StatelessWidget {
 
       // pull request only types
       case 'CommitCommentThread':
-        return _buildFallback(type); // TODO:
+        return _buildFallback(type);
       case 'PullRequestReview':
         final p = node as GPullRequestReviewParts;
         return Column(
@@ -299,7 +297,7 @@ class TimelineItem extends StatelessWidget {
         );
       case 'PullRequestReviewThread':
       case 'PullRequestReviewComment':
-        return _buildFallback(type); // TODO:
+        return _buildFallback(type);
       case 'MergedEvent':
         final p = node as GMergedEventParts;
         return TimelineEventItem(

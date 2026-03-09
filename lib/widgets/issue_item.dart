@@ -106,7 +106,6 @@ class IssueItem extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              // FIXME: Deleted user
                               if (avatarUrl != null) ...[
                                 Avatar(
                                   size: AvatarSize.extraSmall,
@@ -133,7 +132,7 @@ class IssueItem extends StatelessWidget {
                                     size: 14,
                                     color: theme.palette.secondaryText),
                                 SizedBox(width: 3),
-                                Text(numberFormat.format(commentCount))
+                                Text(numberFormat(commentCount))
                               ],
                             ],
                           ),

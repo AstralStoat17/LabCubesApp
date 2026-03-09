@@ -1,6 +1,5 @@
 import 'package:ferry/ferry.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:git_touch/graphql/github.data.gql.dart';
 import 'package:git_touch/graphql/github.req.gql.dart';
 import 'package:git_touch/graphql/github.var.gql.dart';
@@ -150,7 +149,6 @@ class GhIssueScreen extends StatelessWidget {
                 ? StateLabelStatus.issueClosed
                 : StateLabelStatus.issueOpened,
             body: CommentItem.gql(issue, issue, (key) {
-              // TODO: reduce boilerplate
               // switch (key) {
               //   case GReactionContent.THUMBS_UP:
               //     issue.THUMBS_UP.rebuild((b) {

@@ -6,7 +6,6 @@ import 'package:git_touch/widgets/repository_item.dart';
 import 'package:provider/provider.dart';
 import 'package:github/github.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 /// There are some restrictions of organization repos with OAuth
 ///
@@ -20,7 +19,7 @@ class GhOrgReposScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListStatefulScaffold<Repository, int>(
-      title: AppBarTitle(AppLocalizations.of(context)!.repositories),
+      title: AppBarTitle("repositories"),
       fetch: (page) async {
         page = page ?? 1;
         final rs = await context
@@ -33,7 +32,7 @@ class GhOrgReposScreen extends StatelessWidget {
         return ListPayload(
           cursor: page + 1,
           items: rs,
-          hasMore: rs.isNotEmpty, // TODO:
+          hasMore: rs.isNotEmpty,
         );
       },
       itemBuilder: (v) {

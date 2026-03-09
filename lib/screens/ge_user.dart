@@ -109,7 +109,7 @@ class GeUserScreen extends StatelessWidget {
                     note: 'Updated ${timeago.format(v.updatedAt!)}',
                     url: '/gitee/${v.namespace!.path}/${v.path}',
                     avatarLink: '/gitee/${v.namespace!.path}',
-                    // iconData: , TODO:
+                    // iconData: ,
                   )
               ],
             ),

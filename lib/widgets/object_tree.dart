@@ -54,9 +54,6 @@ class ObjectTreeItem extends StatelessWidget {
       url: [
         // Let system browser handle these files
         //
-        // TODO:
-        // Unhandled Exception: PlatformException(Error, Error while launching
-        // https://github.com/flutter/flutter/issues/49162
 
         // Docs
         'pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'xls',

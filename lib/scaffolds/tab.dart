@@ -59,7 +59,7 @@ class TabScaffold extends StatelessWidget {
     final scaffold = CommonScaffold(
       title: _buildTitle(context),
       body: RefreshWrapper(body: body, onRefresh: onRefresh),
-      // action: action, // TODO:
+      // action: action,
       bottom: TabBar(
         onTap: onTabSwitch,
         tabs: tabs.map((text) => Tab(text: text.toUpperCase())).toList(),

@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/widgets/border_view.dart';
-import 'package:intl/intl.dart';
+
 import 'package:primer/primer.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
@@ -38,7 +38,7 @@ class CommonStyle {
   static const padding = EdgeInsets.symmetric(horizontal: 16, vertical: 12);
   static final border = BorderView();
   static const verticalGap = SizedBox(height: 18);
-  static final monospace = Platform.isIOS ? 'Menlo' : 'monospace'; // FIXME:
+  static final monospace = Platform.isIOS ? 'Menlo' : 'monospace';
 }
 
 Color convertColor(String? cssHex) {
@@ -130,13 +130,18 @@ List<T> joinAll<T>(T seperator, List<List<T>> xss) {
   return result;
 }
 
-final numberFormat = NumberFormat();
+String numberFormat(int? number) {
+  if (number == null) return '0';
+  return number.toString().replaceAllMapped(
+        RegExp(r'\B(?=(\d{3})+(?!\d))'),
+        (match) => ',',
+      );
+}
 
 bool isNotNullOrEmpty(String? text) {
   return text != null && text.isNotEmpty;
 }
 
-// TODO: Primer
 class PrimerBranchName extends StatelessWidget {
   final String? name;
 
@@ -172,12 +177,14 @@ launchUrl(String? url) async {
 
   if (await canLaunch(url)) {
     await launch(url);
-  } else {
-    // TODO: fallback
-  }
+  } else {}
 }
 
-final dateFormat = DateFormat.yMMMMd();
+String dateFormat(DateTime date) {
+  return '${date.year.toString().padLeft(4, '0')}-'
+      '${date.month.toString().padLeft(2, '0')}-'
+      '${date.day.toString().padLeft(2, '0')}';
+}
 
 int sortByKey<T>(T key, T a, T b) {
   if (a == key && b != key) return -1;
@@ -185,7 +192,7 @@ int sortByKey<T>(T key, T a, T b) {
   return 0;
 }
 
-const TOTAL_COUNT_FALLBACK = 999; // TODO:
+const TOTAL_COUNT_FALLBACK = 999;
 
 class ListPayload<T, K> {
   K cursor;

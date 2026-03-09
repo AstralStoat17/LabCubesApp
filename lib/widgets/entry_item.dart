@@ -27,7 +27,7 @@ class EntryItem extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                count == null ? '?' : numberFormat.format(count),
+                count == null ? '?' : numberFormat(count),
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,

@@ -9,7 +9,6 @@ import 'package:git_touch/widgets/action_button.dart';
 import 'package:primer/primer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class AppThemeType {
   static const material = 0;
@@ -61,7 +60,7 @@ class SelectorItem<T> {
 }
 
 // No animation. For replacing route
-// TODO: Go back
+
 class StaticRoute extends PageRouteBuilder {
   final WidgetBuilder? builder;
   StaticRoute({this.builder})
@@ -231,10 +230,7 @@ class ThemeModel with ChangeNotifier {
     if (AppMarkdownType.values.contains(m)) {
       _markdown = m;
     }
-    final l = prefs.getString(StorageKeys.locale);
-    if (AppLocalizations.supportedLocales.any((v) => l == v.toString())) {
-      _locale = l;
-    }
+    _locale = prefs.getString(StorageKeys.locale);
 
     notifyListeners();
   }

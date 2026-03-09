@@ -15,7 +15,6 @@ import 'package:git_touch/widgets/table_view.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class StatusPayload {
   bool isWatching;
@@ -33,7 +32,7 @@ class GeRepoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold<
         Tuple4<GiteeRepo, MarkdownViewData, List<GiteeBranch>, StatusPayload>>(
-      title: AppBarTitle(AppLocalizations.of(context)!.repository),
+      title: AppBarTitle("repository"),
       fetch: () async {
         final auth = context.read<AuthModel>();
         final repo = await auth.fetchGitee('/repos/$owner/$name').then((v) {
@@ -143,7 +142,7 @@ class GeRepoScreen extends StatelessWidget {
                 TableViewItem(
                   leftIconData: Octicons.issue_opened,
                   text: Text('Issues'),
-                  rightWidget: Text(numberFormat.format(p.openIssuesCount)),
+                  rightWidget: Text(numberFormat(p.openIssuesCount)),
                   url: '/gitee/$owner/$name/issues',
                 ),
                 if (p.pullRequestsEnabled!)
@@ -160,7 +159,7 @@ class GeRepoScreen extends StatelessWidget {
                 ),
                 TableViewItem(
                   leftIconData: Octicons.git_branch,
-                  text: Text(AppLocalizations.of(context)!.branches),
+                  text: Text("branches"),
                   rightWidget: Text((branch ?? p.defaultBranch)! +
                       ' • ' +
                       branches.length.toString()),

@@ -6,7 +6,6 @@ import 'package:git_touch/widgets/app_bar_title.dart';
 import 'package:git_touch/widgets/issue_item.dart';
 import 'package:git_touch/widgets/label.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GlMergeRequestsScreen extends StatelessWidget {
   final String id;
@@ -16,7 +15,7 @@ class GlMergeRequestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListStatefulScaffold<GitlabIssue, int>(
-      title: AppBarTitle(AppLocalizations.of(context)!.mergeRequests),
+      title: AppBarTitle("mergeRequests"),
       fetch: (page) async {
         page = page ?? 1;
         final res = await context.read<AuthModel>().fetchGitlabWithPage(
@@ -43,7 +42,7 @@ class GlMergeRequestsScreen extends StatelessWidget {
                   MyLabel(name: label, cssColor: '#428BCA')
               ]),
         // url: '/gitlab/projects/${p.projectId}/merge_requests/${p.iid}',
-        url: '$prefix/merge_requests/${p.iid}', // TODO:
+        url: '$prefix/merge_requests/${p.iid}',
       ),
     );
   }

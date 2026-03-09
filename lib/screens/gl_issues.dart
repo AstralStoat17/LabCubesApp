@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/gitlab.dart';
 import 'package:git_touch/scaffolds/list_stateful.dart';
-import 'package:git_touch/utils/utils.dart';
+
 import 'package:git_touch/widgets/action_entry.dart';
 import 'package:git_touch/widgets/app_bar_title.dart';
 import 'package:git_touch/widgets/issue_item.dart';
 import 'package:git_touch/widgets/label.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GlIssuesScreen extends StatelessWidget {
   final String id;
@@ -18,7 +17,7 @@ class GlIssuesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListStatefulScaffold<GitlabIssue, int>(
-      title: AppBarTitle(AppLocalizations.of(context)!.issues),
+      title: AppBarTitle("issues"),
       fetch: (page) async {
         page = page ?? 1;
         final auth = context.read<AuthModel>();
