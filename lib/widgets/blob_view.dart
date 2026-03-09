@@ -29,7 +29,6 @@ class BlobView extends StatelessWidget {
     final codeProvider = Provider.of<CodeModel>(context);
     final theme = Provider.of<ThemeModel>(context);
     switch (name!.ext) {
-      // TODO: All image types
       case 'png':
       case 'jpg':
       case 'jpeg':
@@ -44,7 +43,7 @@ class BlobView extends StatelessWidget {
                 networkUrl!,
                 loadingBuilder: (_, child, p) {
                   if (p == null) return child;
-                  // TODO: progress
+
                   return Loading();
                 },
               )

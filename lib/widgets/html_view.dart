@@ -67,7 +67,7 @@ class _HtmlViewState extends State<HtmlView> {
         },
         navigationDelegate: (request) {
           if (loaded) {
-            launchUrl(request.url); // TODO:
+            launchUrl(request.url);
             return NavigationDecision.prevent;
           } else {
             loaded = true;

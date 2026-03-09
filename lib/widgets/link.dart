@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:git_touch/models/theme.dart';
 
-// TODO:
 class CupertinoLink extends StatefulWidget {
   final Widget? child;
   final Function? onTap;

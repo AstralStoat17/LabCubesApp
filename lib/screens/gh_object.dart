@@ -22,7 +22,7 @@ class GhObjectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold<RepositoryContents>(
-      // canRefresh: !_isImage, // TODO:
+      // canRefresh: !_isImage,
       title: AppBarTitle(path ?? 'Files'),
       fetch: () async {
         // Do not request again for images
@@ -79,7 +79,6 @@ class GhObjectScreen extends StatelessWidget {
             }),
           );
         } else {
-          // TODO: Markdown base path
           // basePaths: [owner, name, branch, ...paths]
           return BlobView(
             path,

@@ -55,7 +55,6 @@ class MarkdownView extends StatelessWidget {
   }
 }
 
-// TODO: Safari table width
 class MarkdownWebView extends StatelessWidget {
   final String? html;
   MarkdownWebView(this.html);
@@ -113,13 +112,12 @@ class MarkdownFlutterView extends StatelessWidget {
         selectable: true,
         imageBuilder: (uri, title, alt) {
           if (uri.scheme == 'http' || uri.scheme == 'https') {
-            // TODO: svg support
             // if (uri.path.endsWith('.svg')) {
             //   return SvgPicture.network(uri.toString());
             // }
             return Image.network(uri.toString());
           } else {
-            return Container(); // TODO: relative path image
+            return Container();
           }
         },
         onTapLink: (text, url, title) {
@@ -138,7 +136,6 @@ class MarkdownFlutterView extends StatelessWidget {
                 '/${basePaths![0]}/${basePaths![1]}/${basePaths![2]}?path=${y.urlencode}');
           }
 
-          // TODO: Relative paths
           if (url!.startsWith('https://github.com')) {
             const matchedPaths = [
               '/{owner}/{name}/pull/{number}',
@@ -207,7 +204,7 @@ class MarkdownFlutterView extends StatelessWidget {
             ),
           ),
         ),
-        // syntaxHighlighter: , // TODO:
+        // syntaxHighlighter: ,
       ),
     );
   }

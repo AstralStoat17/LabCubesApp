@@ -10,7 +10,6 @@ import 'package:git_touch/widgets/object_tree.dart';
 import 'package:git_touch/widgets/table_view.dart';
 import 'package:provider/provider.dart';
 import 'package:git_touch/models/auth.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GhGistsFilesScreen extends StatelessWidget {
   final String id;
@@ -20,7 +19,7 @@ class GhGistsFilesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold<GGistData_user_gist?>(
-      title: AppBarTitle(AppLocalizations.of(context)!.files),
+      title: AppBarTitle("files"),
       fetch: () async {
         final req = GGistReq((b) => b
           ..vars.login = login

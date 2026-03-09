@@ -50,10 +50,9 @@ class GoUserScreen extends StatelessWidget {
               login: user.username,
               avatarUrl: user.avatarUrl,
               name: user.fullName,
-              createdAt:
-                  null, // TODO: API response does not have this attribute
+              createdAt: null,
               isViewer: isViewer,
-              bio: null, // TODO: API response does not have this attribute
+              bio: null,
             ),
             CommonStyle.border,
             Row(children: [

@@ -5,8 +5,6 @@ import 'package:git_touch/scaffolds/list_stateful.dart';
 import 'package:git_touch/widgets/app_bar_title.dart';
 import 'package:git_touch/widgets/issue_item.dart';
 import 'package:provider/provider.dart';
-import 'package:git_touch/utils/utils.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class BbPullsScreen extends StatelessWidget {
   final String owner;
@@ -17,7 +15,7 @@ class BbPullsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthModel>(context);
     return ListStatefulScaffold<BbPulls, String?>(
-      title: AppBarTitle(AppLocalizations.of(context)!.pullRequests),
+      title: AppBarTitle("pullRequests"),
       fetch: (nextUrl) async {
         final res = await context.read<AuthModel>().fetchBbWithPage(
             nextUrl ?? '/repositories/$owner/$name/pullrequests');
