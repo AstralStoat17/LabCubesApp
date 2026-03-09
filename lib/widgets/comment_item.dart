@@ -137,7 +137,7 @@ mutation {
                   children: <Widget>[
                     Text(item.text, style: TextStyle(fontSize: 18)),
                     SizedBox(width: 4),
-                    Text(numberFormat.format(item.count),
+                    Text(numberFormat(item.count),
                         style: TextStyle(
                             color: theme.palette.primary, fontSize: 14))
                   ],

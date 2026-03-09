@@ -248,15 +248,13 @@ class GhRepoScreen extends StatelessWidget {
                   TableViewItem(
                     leftIconData: Octicons.issue_opened,
                     text: Text("issues"),
-                    rightWidget:
-                        Text(numberFormat.format(repo.issues.totalCount)),
+                    rightWidget: Text(numberFormat(repo.issues.totalCount)),
                     url: '/github/$owner/$name/issues',
                   ),
                 TableViewItem(
                   leftIconData: Octicons.git_pull_request,
                   text: Text("pullRequests"),
-                  rightWidget:
-                      Text(numberFormat.format(repo.pullRequests.totalCount)),
+                  rightWidget: Text(numberFormat(repo.pullRequests.totalCount)),
                   url: '/github/$owner/$name/pulls',
                 ),
                 if (ref != null) ...[
@@ -274,7 +272,7 @@ class GhRepoScreen extends StatelessWidget {
                       text: Text("branches"),
                       rightWidget: Text(ref.name +
                           ' • ' +
-                          numberFormat.format(repo.refs!.totalCount)),
+                          numberFormat(repo.refs!.totalCount)),
                       onTap: () async {
                         final refs = repo.refs!.nodes!;
                         if (refs.length < 2) return;

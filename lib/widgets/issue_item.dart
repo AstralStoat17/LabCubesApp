@@ -132,7 +132,7 @@ class IssueItem extends StatelessWidget {
                                     size: 14,
                                     color: theme.palette.secondaryText),
                                 SizedBox(width: 3),
-                                Text(numberFormat.format(commentCount))
+                                Text(numberFormat(commentCount))
                               ],
                             ],
                           ),

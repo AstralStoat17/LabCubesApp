@@ -79,7 +79,7 @@ class UserHeader extends StatelessWidget {
                 ),
                 SizedBox(width: 4),
                 Text(
-                  'Joined on ${dateFormat.format(createdAt!)}',
+                  'Joined on ${dateFormat(createdAt!)}',
                   style: TextStyle(
                     color: theme.palette.tertiaryText,
                     fontSize: 16,

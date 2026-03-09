@@ -90,13 +90,13 @@ class GtRepoScreen extends StatelessWidget {
                 TableViewItem(
                   leftIconData: Octicons.issue_opened,
                   text: Text('Issues'),
-                  rightWidget: Text(numberFormat.format(p.openIssuesCount)),
+                  rightWidget: Text(numberFormat(p.openIssuesCount)),
                   url: '/gitea/$owner/$name/issues',
                 ),
                 TableViewItem(
                   leftIconData: Octicons.git_pull_request,
                   text: Text('Pull requests'),
-                  rightWidget: Text(numberFormat.format(p.openPrCounter)),
+                  rightWidget: Text(numberFormat(p.openPrCounter)),
                   url: '/gitea/$owner/$name/pulls',
                 ),
                 TableViewItem(

@@ -230,10 +230,7 @@ class ThemeModel with ChangeNotifier {
     if (AppMarkdownType.values.contains(m)) {
       _markdown = m;
     }
-    final l = prefs.getString(StorageKeys.locale);
-    if (AppLocalizations.supportedLocales.any((v) => l == v.toString())) {
-      _locale = l;
-    }
+    _locale = prefs.getString(StorageKeys.locale);
 
     notifyListeners();
   }

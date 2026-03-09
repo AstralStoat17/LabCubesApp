@@ -72,29 +72,46 @@ class SettingsScreen extends StatelessWidget {
                 rightWidget: Text(auth.activeAccount!.login),
               ),
               TableViewItem(
-                text: Text('App Language'),
-                rightWidget: Text(theme.locale == null
-                    ? "followSystem"
-                    : localeNameMap[theme.locale!] ?? theme.locale!),
+                text: Text("App Language"),
+                rightWidget: Text(
+                  theme.locale == null
+                      ? "Follow system"
+                      : (localeNameMap[theme.locale!] ?? theme.locale!),
+                ),
                 onTap: () {
                   theme.showActions(context, [
+                    for (final localeKey in localeNameMap.keys)
+                      ActionItem(
+                        text: localeNameMap[localeKey] ?? localeKey,
+                        onTap: (_) async {
+                          final res = await theme.showConfirm(
+                            context,
+                            Text(
+                                'The app will reload to make the language setting take effect'),
+                          );
+                          if (res == true && theme.locale != localeKey) {
+                            await theme.setLocale(localeKey);
+                            auth.reloadApp();
+                          }
+                        },
+                      ),
                     ActionItem(
-                      text: key == null ? "followSystem" : localeNameMap[key],
+                      text: "Follow system",
                       onTap: (_) async {
                         final res = await theme.showConfirm(
                           context,
                           Text(
                               'The app will reload to make the language setting take effect'),
                         );
-                        if (res == true && theme.locale != key) {
-                          await theme.setLocale(key);
+                        if (res == true && theme.locale != null) {
+                          await theme.setLocale(null);
                           auth.reloadApp();
                         }
                       },
-                    )
+                    ),
                   ]);
                 },
-              )
+              ),
             ],
           ),
           CommonStyle.verticalGap,

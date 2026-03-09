@@ -162,8 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               context,
                               _buildPopup(context, notes: [
                                 Text(
-                                  AppLocalizations.of(context)!
-                                      .permissionRequiredMessage,
+                                  "permissionRequiredMessage",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400),
@@ -203,8 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           showDomain: true,
                           notes: [
                             Text(
-                              AppLocalizations.of(context)!
-                                  .permissionRequiredMessage,
+                              "permissionRequiredMessage",
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w400),
                             ),
@@ -270,8 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              AppLocalizations.of(context)!
-                                  .permissionRequiredMessage,
+                              "permissionRequiredMessage",
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w400),
                             ),

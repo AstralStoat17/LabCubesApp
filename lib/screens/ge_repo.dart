@@ -142,7 +142,7 @@ class GeRepoScreen extends StatelessWidget {
                 TableViewItem(
                   leftIconData: Octicons.issue_opened,
                   text: Text('Issues'),
-                  rightWidget: Text(numberFormat.format(p.openIssuesCount)),
+                  rightWidget: Text(numberFormat(p.openIssuesCount)),
                   url: '/gitee/$owner/$name/issues',
                 ),
                 if (p.pullRequestsEnabled!)

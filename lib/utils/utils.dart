@@ -130,7 +130,13 @@ List<T> joinAll<T>(T seperator, List<List<T>> xss) {
   return result;
 }
 
-final numberFormat = NumberFormat();
+String numberFormat(int? number) {
+  if (number == null) return '0';
+  return number.toString().replaceAllMapped(
+        RegExp(r'\B(?=(\d{3})+(?!\d))'),
+        (match) => ',',
+      );
+}
 
 bool isNotNullOrEmpty(String? text) {
   return text != null && text.isNotEmpty;
@@ -174,7 +180,11 @@ launchUrl(String? url) async {
   } else {}
 }
 
-final dateFormat = DateFormat.yMMMMd();
+String dateFormat(DateTime date) {
+  return '${date.year.toString().padLeft(4, '0')}-'
+      '${date.month.toString().padLeft(2, '0')}-'
+      '${date.day.toString().padLeft(2, '0')}';
+}
 
 int sortByKey<T>(T key, T a, T b) {
   if (a == key && b != key) return -1;

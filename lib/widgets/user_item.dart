@@ -56,7 +56,7 @@ class GhBioWidget extends StatelessWidget {
         ),
         SizedBox(width: 4),
         Expanded(
-            child: Text('Joined on ${dateFormat.format(p.createdAt)}',
+            child: Text('Joined on ${dateFormat(p.createdAt)}',
                 overflow: TextOverflow.ellipsis)),
       ],
     );

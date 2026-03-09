@@ -179,7 +179,7 @@ class GlProjectScreen extends StatelessWidget {
                   TableViewItem(
                     leftIconData: Octicons.issue_opened,
                     text: Text("issues"),
-                    rightWidget: Text(numberFormat.format(p.openIssuesCount)),
+                    rightWidget: Text(numberFormat(p.openIssuesCount)),
                     url: '/gitlab/projects/$id/issues?prefix=$prefix',
                   ),
                 if (p.mergeRequestsEnabled!)
