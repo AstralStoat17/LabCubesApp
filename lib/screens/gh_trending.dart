@@ -8,18 +8,14 @@ import 'package:git_touch/widgets/user_item.dart';
 import 'package:github_trending/github_trending.dart';
 import 'package:git_touch/widgets/repository_item.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GhTrendingScreen extends StatelessWidget {
   static final trending = GithubTrending(prefix: 'https://gtrend.yapie.me');
 
   Widget build(BuildContext context) {
     return TabStatefulScaffold<List>(
-      title: AppBarTitle(AppLocalizations.of(context)!.trending),
-      tabs: [
-        AppLocalizations.of(context)!.repositories,
-        AppLocalizations.of(context)!.developers
-      ],
+      title: AppBarTitle("trending"),
+      tabs: ["repositories", "developers"],
       fetchData: (tabIndex) async {
         if (tabIndex == 0) {
           return trending.getTrendingRepositories();
@@ -47,7 +43,7 @@ class GhTrendingScreen extends StatelessWidget {
                         primaryLanguageColor: v.languageColor,
                         note: '${v.currentPeriodStars} stars today',
                         isPrivate: false,
-                        isFork: false, // TODO:
+                        isFork: false,
                       )
                   ]
                 : [

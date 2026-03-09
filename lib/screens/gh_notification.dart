@@ -12,7 +12,6 @@ import '../widgets/notification_item.dart';
 import '../widgets/list_group.dart';
 import '../widgets/empty.dart';
 import '../utils/utils.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GhNotificationScreen extends StatefulWidget {
   @override
@@ -33,7 +32,7 @@ class GhNotificationScreenState extends State<GhNotificationScreen> {
     Map<String, NotificationGroup> _groupMap = {};
 
     ns.forEach((item) {
-      final repo = item.repository!.fullName ?? ''; // TODO: nullable
+      final repo = item.repository!.fullName ?? '';
       if (_groupMap[repo] == null) {
         _groupMap[repo] = NotificationGroup(repo);
       }
@@ -127,7 +126,7 @@ ${item.key}: pullRequest(number: ${item.subject!.number}) {
                   .activity
                   .markRepositoryNotificationsRead(
                       RepositorySlug.full(group.fullName!));
-              // await _onSwitchTab(); // TODO:
+              // await _onSwitchTab();
             },
             child: Icon(
               Ionicons.checkmark_done,
@@ -156,12 +155,8 @@ ${item.key}: pullRequest(number: ${item.subject!.number}) {
   @override
   Widget build(context) {
     return TabStatefulScaffold<Map<String, NotificationGroup>>(
-      title: AppBarTitle(AppLocalizations.of(context)!.notification),
-      tabs: [
-        AppLocalizations.of(context)!.unread,
-        AppLocalizations.of(context)!.participating,
-        AppLocalizations.of(context)!.all
-      ],
+      title: AppBarTitle("notification"),
+      tabs: ["unread", "participating", "all"],
       fetchData: fetchNotifications,
       bodyBuilder: (dynamic groupMap, activeTab) {
         if (groupMap.isEmpty) return EmptyWidget();

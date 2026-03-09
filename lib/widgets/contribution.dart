@@ -53,7 +53,6 @@ class ContributionWidget extends StatelessWidget {
           if (day.count == 0) {
             day.hexColor = contributionEmptyColor;
           } else {
-            // TODO: algorithm
             final level = (day.count! * 4) ~/ (maxCount! + 1);
             day.hexColor = contributionColors[level];
           }

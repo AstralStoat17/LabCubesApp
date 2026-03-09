@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:git_touch/app.dart';
 import 'package:git_touch/models/code.dart';
 import 'package:git_touch/models/auth.dart';

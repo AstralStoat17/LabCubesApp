@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:git_touch/graphql/github.data.gql.dart';
 import 'package:git_touch/graphql/schema.schema.gql.dart';
@@ -108,7 +107,7 @@ mutation {
         item.count--;
       }
     });
-    // TODO: should set state from parent widgets
+
     // widget.onReaction(item.key);
   }
 
@@ -195,8 +194,7 @@ class CommentItem extends StatelessWidget {
         body = p.body,
         widgets = [GhEmojiAction(p.id, r, onReaction)],
         prefix = 'github',
-        commentActionItemList = []; // TODO
-
+        commentActionItemList = [];
   CommentItem({
     required this.avatar,
     required this.login,
@@ -241,7 +239,7 @@ class CommentItem extends StatelessWidget {
               )),
         ]),
         SizedBox(height: 12),
-        MarkdownFlutterView(body, padding: EdgeInsets.zero), // TODO: link
+        MarkdownFlutterView(body, padding: EdgeInsets.zero),
         SizedBox(height: 12),
         if (widgets != null) ...widgets!
       ],

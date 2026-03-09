@@ -16,8 +16,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
+  #flutter_localizations:
+  #sdk: flutter
   cupertino_icons: ^1.0.3
   ferry: ^0.10.2
   ferry_flutter: ^0.5.2
@@ -34,7 +34,7 @@ dependencies:
   gql_http_link: ^0.4.0-nullsafety.1
   http: ^0.13.3
   # in_app_review: ^1.0.4
-  intl: 0.20.2
+  #intl: 0.20.2
   json_annotation: ^4.0.1
   launch_review: ^3.0.1
   nanoid: ^1.0.0
@@ -52,6 +52,7 @@ dependencies:
   webview_flutter: ^2.0.4
   sentry_flutter: ^5.1.0
   pub_semver: ^2.0.0
+  flutter_gen: ^3.1.1
 
 dev_dependencies:
   flutter_test:

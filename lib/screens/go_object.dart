@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
+
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/gogs.dart';
 import 'package:git_touch/scaffolds/refresh_stateful.dart';
@@ -21,7 +21,7 @@ class GoObjectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold(
-      title: AppBarTitle(path ?? AppLocalizations.of(context)!.files),
+      title: AppBarTitle(path ?? "files"),
       fetch: () async {
         final suffix = path == null ? '' : '/$path';
         final res = await context

@@ -27,7 +27,6 @@ import 'package:git_touch/screens/gh_search.dart';
 import 'package:git_touch/screens/gh_trending.dart';
 import 'package:git_touch/screens/ge_search.dart';
 import 'package:github/github.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:universal_io/io.dart';
 
@@ -182,22 +181,22 @@ class _HomeState extends State<Home> {
     final search = BottomNavigationBarItem(
       icon: Icon(Ionicons.search_outline),
       activeIcon: Icon(Ionicons.search),
-      label: AppLocalizations.of(context)!.search,
+      label: "search",
     );
     final group = BottomNavigationBarItem(
       icon: Icon(Ionicons.people_outline),
       activeIcon: Icon(Ionicons.people),
-      label: AppLocalizations.of(context)!.organizations,
+      label: "organizations",
     );
     final me = BottomNavigationBarItem(
       icon: Icon(Ionicons.person_outline),
       activeIcon: Icon(Ionicons.person),
-      label: AppLocalizations.of(context)!.me,
+      label: "me",
     );
     final explore = BottomNavigationBarItem(
       icon: Icon(Ionicons.compass_outline),
       activeIcon: Icon(Ionicons.compass),
-      label: AppLocalizations.of(context)!.explore,
+      label: "explore",
     );
 
     switch (platform) {
@@ -206,18 +205,18 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Ionicons.newspaper_outline),
             activeIcon: Icon(Ionicons.newspaper),
-            label: AppLocalizations.of(context)!.news,
+            label: "news",
           ),
           BottomNavigationBarItem(
             icon:
                 _buildNotificationIcon(context, Ionicons.notifications_outline),
             activeIcon: _buildNotificationIcon(context, Ionicons.notifications),
-            label: AppLocalizations.of(context)!.notification,
+            label: "notification",
           ),
           BottomNavigationBarItem(
             icon: Icon(Ionicons.flame_outline),
             activeIcon: Icon(Ionicons.flame),
-            label: AppLocalizations.of(context)!.trending,
+            label: "trending",
           ),
           search,
           me,

@@ -9,7 +9,6 @@ import 'package:git_touch/widgets/app_bar_title.dart';
 import 'package:git_touch/widgets/issue_item.dart';
 import 'package:git_touch/widgets/label.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GhPullsScreen extends StatelessWidget {
   final String owner;
@@ -20,7 +19,7 @@ class GhPullsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListStatefulScaffold<GPullsData_repository_pullRequests_nodes,
         String?>(
-      title: AppBarTitle(AppLocalizations.of(context)!.pullRequests),
+      title: AppBarTitle("pullRequests"),
       fetch: (cursor) async {
         final req = GPullsReq((b) {
           b.vars.owner = owner;

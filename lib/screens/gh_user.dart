@@ -19,7 +19,6 @@ import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/widgets/user_header.dart';
 import 'package:provider/provider.dart';
 import 'package:git_touch/widgets/action_button.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class _Repos extends StatelessWidget {
   final String title;
@@ -85,22 +84,22 @@ class _User extends StatelessWidget {
         Row(children: [
           EntryItem(
             count: p!.repositories.totalCount,
-            text: AppLocalizations.of(context)!.repositories,
+            text: "repositories",
             url: '/github/$login?tab=repositories',
           ),
           EntryItem(
             count: p!.starredRepositories.totalCount,
-            text: AppLocalizations.of(context)!.stars,
+            text: "stars",
             url: '/github/$login?tab=stars',
           ),
           EntryItem(
             count: p!.followers.totalCount,
-            text: AppLocalizations.of(context)!.followers,
+            text: "followers",
             url: '/github/$login?tab=followers',
           ),
           EntryItem(
             count: p!.following.totalCount,
-            text: AppLocalizations.of(context)!.following,
+            text: "following",
             url: '/github/$login?tab=following',
           ),
         ]),
@@ -121,17 +120,17 @@ class _User extends StatelessWidget {
           items: [
             TableViewItem(
               leftIconData: Octicons.rss,
-              text: Text(AppLocalizations.of(context)!.events),
+              text: Text("events"),
               url: '/github/$login?tab=events',
             ),
             TableViewItem(
               leftIconData: Octicons.book,
-              text: Text(AppLocalizations.of(context)!.gists),
+              text: Text("gists"),
               url: '/github/$login?tab=gists',
             ),
             TableViewItem(
               leftIconData: Octicons.home,
-              text: Text(AppLocalizations.of(context)!.organizations),
+              text: Text("organizations"),
               url: '/github/$login?tab=organizations',
             ),
             if (isNotNullOrEmpty(p!.company))
@@ -206,12 +205,12 @@ class _Org extends StatelessWidget {
         Row(children: [
           EntryItem(
             count: p!.pinnableItems.totalCount,
-            text: AppLocalizations.of(context)!.repositories,
+            text: "repositories",
             url: '/github/${p!.login}?tab=orgrepo',
           ),
           EntryItem(
             count: p!.membersWithRole.totalCount,
-            text: AppLocalizations.of(context)!.members,
+            text: "members",
             url: '/github/${p!.login}?tab=people',
           ),
         ]),
@@ -219,7 +218,7 @@ class _Org extends StatelessWidget {
           items: [
             TableViewItem(
               leftIconData: Octicons.rss,
-              text: Text(AppLocalizations.of(context)!.events),
+              text: Text("events"),
               url: '/github/${p!.login}?tab=events',
             ),
             if (isNotNullOrEmpty(p!.location))
@@ -275,7 +274,7 @@ class GhViewer extends StatelessWidget {
             await auth.gqlClient.request(req).first;
         return res.data!.viewer;
       },
-      title: AppBarTitle(AppLocalizations.of(context)!.me),
+      title: AppBarTitle("me"),
       action: ActionEntry(
         iconData: Ionicons.cog,
         url: '/settings',
@@ -317,9 +316,7 @@ class GhUser extends StatelessWidget {
               if (p.viewerCanFollow)
                 MutationButton(
                   active: p.viewerIsFollowing,
-                  text: p.viewerIsFollowing
-                      ? AppLocalizations.of(context)!.unfollow
-                      : AppLocalizations.of(context)!.follow,
+                  text: p.viewerIsFollowing ? "unfollow" : "follow",
                   onTap: () async {
                     if (p.viewerIsFollowing) {
                       await auth.ghClient.users.unfollowUser(p.login);

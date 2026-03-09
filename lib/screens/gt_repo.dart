@@ -14,7 +14,6 @@ import 'package:git_touch/widgets/table_view.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GtRepoScreen extends StatelessWidget {
   final String owner;
@@ -24,7 +23,7 @@ class GtRepoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshStatefulScaffold<Tuple2<GiteaRepository, MarkdownViewData>>(
-      title: AppBarTitle(AppLocalizations.of(context)!.repository),
+      title: AppBarTitle("repository"),
       fetch: () async {
         final auth = context.read<AuthModel>();
         final repo = await auth.fetchGitea('/repos/$owner/$name').then((v) {

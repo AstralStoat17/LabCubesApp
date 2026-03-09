@@ -9,9 +9,7 @@ import 'package:git_touch/scaffolds/refresh_stateful.dart';
 import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/widgets/app_bar_title.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
-// TODO:
 class GlCommitScreen extends StatelessWidget {
   final String id;
   final String? sha;
@@ -30,7 +28,7 @@ class GlCommitScreen extends StatelessWidget {
     final theme = Provider.of<ThemeModel>(context);
 
     return RefreshStatefulScaffold<List<GitlabDiff>>(
-      title: AppBarTitle(AppLocalizations.of(context)!.commits),
+      title: AppBarTitle("commits"),
       fetch: () => _query(context),
       bodyBuilder: (items, _) {
         return Column(

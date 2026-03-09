@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
+
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/gitea.dart';
 import 'package:git_touch/scaffolds/list_stateful.dart';
-import 'package:git_touch/utils/utils.dart';
+
 import 'package:git_touch/widgets/action_entry.dart';
 import 'package:git_touch/widgets/app_bar_title.dart';
 import 'package:git_touch/widgets/issue_item.dart';
@@ -19,9 +19,7 @@ class GtIssuesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListStatefulScaffold<GiteaIssue, int>(
-      title: AppBarTitle(isPr
-          ? AppLocalizations.of(context)!.pullRequests
-          : AppLocalizations.of(context)!.issues),
+      title: AppBarTitle(isPr ? "pullRequests" : "issues"),
       fetch: (page) async {
         final type = isPr ? 'pulls' : 'issues';
         final res = await context.read<AuthModel>().fetchGiteaWithPage(
@@ -46,9 +44,7 @@ class GtIssuesScreen extends StatelessWidget {
         subtitle: '#' + p.number.toString(),
         title: p.title,
         updatedAt: p.updatedAt,
-        url: isPr
-            ? p.htmlUrl // TODO: PR endpoints are not complete in Gitea
-            : '/gitea/$owner/$name/issues/${p.number}',
+        url: isPr ? p.htmlUrl : '/gitea/$owner/$name/issues/${p.number}',
         labels: isPr
             ? null
             : p.labels!.isEmpty

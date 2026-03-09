@@ -9,7 +9,6 @@ import 'package:git_touch/utils/utils.dart';
 import 'package:git_touch/widgets/app_bar_title.dart';
 import 'package:git_touch/widgets/table_view.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class CodeThemeScreen extends StatelessWidget {
   String _getCode(bool isDark) => '''// ${isDark ? 'Dark' : 'Light'} Mode
@@ -39,17 +38,17 @@ class MyApp extends StatelessWidget {
     var theme = Provider.of<ThemeModel>(context);
 
     return SingleScaffold(
-      title: AppBarTitle(AppLocalizations.of(context)!.codeTheme),
+      title: AppBarTitle("codeTheme"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           CommonStyle.verticalGap,
           TableView(
-            headerText: AppLocalizations.of(context)!.fontStyle,
+            headerText: "fontStyle",
             hasIcon: false,
             items: [
               TableViewItem(
-                text: Text(AppLocalizations.of(context)!.fontSize),
+                text: Text("fontSize"),
                 rightWidget: Text(codeProvider.fontSize.toString()),
                 onTap: () {
                   theme.showPicker(
@@ -68,7 +67,7 @@ class MyApp extends StatelessWidget {
                 },
               ),
               TableViewItem(
-                text: Text(AppLocalizations.of(context)!.fontFamily),
+                text: Text("fontFamily"),
                 rightWidget: Text(codeProvider.fontFamily),
                 onTap: () {
                   theme.showPicker(
@@ -89,10 +88,10 @@ class MyApp extends StatelessWidget {
           ),
           CommonStyle.verticalGap,
           TableView(
-            headerText: AppLocalizations.of(context)!.syntaxHighlighting,
+            headerText: "syntaxHighlighting",
             items: [
               TableViewItem(
-                text: Text(AppLocalizations.of(context)!.light),
+                text: Text("light"),
                 rightWidget: Text(codeProvider.theme),
                 onTap: () {
                   theme.showPicker(
@@ -110,7 +109,7 @@ class MyApp extends StatelessWidget {
                 },
               ),
               TableViewItem(
-                text: Text(AppLocalizations.of(context)!.dark),
+                text: Text("dark"),
                 rightWidget: Text(codeProvider.themeDark),
                 onTap: () {
                   theme.showPicker(

@@ -23,7 +23,6 @@ import 'package:git_touch/models/theme.dart';
 import 'package:tuple/tuple.dart';
 import 'package:git_touch/widgets/action_button.dart';
 import 'package:universal_io/io.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GhRepoScreen extends StatelessWidget {
   final String owner;
@@ -49,7 +48,7 @@ class GhRepoScreen extends StatelessWidget {
     final theme = Provider.of<ThemeModel>(context);
     return RefreshStatefulScaffold<
         Tuple3<GRepoData_repository?, Future<int>, MarkdownViewData>>(
-      title: AppBarTitle(AppLocalizations.of(context)!.repository),
+      title: AppBarTitle("repository"),
       fetch: () async {
         final req = GRepoReq((b) => b
           ..vars.owner = owner
@@ -90,11 +89,10 @@ class GhRepoScreen extends StatelessWidget {
       actionBuilder: (data, _) {
         final repo = data.item1!;
         return ActionButton(
-          title: AppLocalizations.of(context)!.repositoryActions,
+          title: "repositoryActions",
           items: [
             ActionItem(
-              text: AppLocalizations.of(context)!.projects +
-                  '(${repo.projects.totalCount})',
+              text: "projects" + '(${repo.projects.totalCount})',
               url: repo.projectsUrl,
             ),
             ...ActionItem.getUrlActions(repo.url),
@@ -189,7 +187,6 @@ class GhRepoScreen extends StatelessWidget {
               ],
               trailings: <Widget>[
                 if (repo.repositoryTopics.nodes!.isNotEmpty)
-                  // TODO: link
                   Wrap(
                     spacing: 4,
                     runSpacing: 4,
@@ -209,17 +206,17 @@ class GhRepoScreen extends StatelessWidget {
               children: <Widget>[
                 EntryItem(
                   count: repo.watchers.totalCount,
-                  text: AppLocalizations.of(context)!.watchers,
+                  text: "watchers",
                   url: '/github/$owner/$name/watchers',
                 ),
                 EntryItem(
                   count: repo.stargazers.totalCount,
-                  text: AppLocalizations.of(context)!.stars,
+                  text: "stars",
                   url: '/github/$owner/$name/stargazers',
                 ),
                 EntryItem(
                   count: repo.forks.totalCount,
-                  text: AppLocalizations.of(context)!.forks,
+                  text: "forks",
                   url: 'https://github.com/$owner/$name/network/members',
                 ),
               ],
@@ -250,14 +247,14 @@ class GhRepoScreen extends StatelessWidget {
                 if (repo.hasIssuesEnabled)
                   TableViewItem(
                     leftIconData: Octicons.issue_opened,
-                    text: Text(AppLocalizations.of(context)!.issues),
+                    text: Text("issues"),
                     rightWidget:
                         Text(numberFormat.format(repo.issues.totalCount)),
                     url: '/github/$owner/$name/issues',
                   ),
                 TableViewItem(
                   leftIconData: Octicons.git_pull_request,
-                  text: Text(AppLocalizations.of(context)!.pullRequests),
+                  text: Text("pullRequests"),
                   rightWidget:
                       Text(numberFormat.format(repo.pullRequests.totalCount)),
                   url: '/github/$owner/$name/pulls',
@@ -265,7 +262,7 @@ class GhRepoScreen extends StatelessWidget {
                 if (ref != null) ...[
                   TableViewItem(
                     leftIconData: Octicons.history,
-                    text: Text(AppLocalizations.of(context)!.commits),
+                    text: Text("commits"),
                     rightWidget: Text(
                         ((ref.target as GRepoCommit).history.totalCount)
                             .toString()),
@@ -274,7 +271,7 @@ class GhRepoScreen extends StatelessWidget {
                   if (repo.refs != null)
                     TableViewItem(
                       leftIconData: Octicons.git_branch,
-                      text: Text(AppLocalizations.of(context)!.branches),
+                      text: Text("branches"),
                       rightWidget: Text(ref.name +
                           ' • ' +
                           numberFormat.format(repo.refs!.totalCount)),
@@ -302,7 +299,7 @@ class GhRepoScreen extends StatelessWidget {
                     ),
                   TableViewItem(
                     leftIconData: Octicons.organization,
-                    text: Text(AppLocalizations.of(context)!.contributors),
+                    text: Text("contributors"),
                     rightWidget: FutureBuilder<int>(
                       future: contributionFuture,
                       builder: (context, snapshot) {

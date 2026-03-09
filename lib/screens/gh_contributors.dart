@@ -6,7 +6,6 @@ import 'package:git_touch/widgets/app_bar_title.dart';
 import 'package:git_touch/widgets/contributor_item.dart';
 import 'package:provider/provider.dart';
 import 'package:git_touch/models/auth.dart';
-import 'package:flutter_gen/gen_l10n/S.dart';
 
 class GhContributorsScreen extends StatelessWidget {
   final String owner;
@@ -15,7 +14,7 @@ class GhContributorsScreen extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return ListStatefulScaffold<GithubContributorItem, int>(
-      title: AppBarTitle(AppLocalizations.of(context)!.contributors),
+      title: AppBarTitle("contributors"),
       fetch: (page) async {
         page = page ?? 1;
         final res = await context

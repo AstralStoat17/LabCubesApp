@@ -106,7 +106,6 @@ class IssueItem extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              // FIXME: Deleted user
                               if (avatarUrl != null) ...[
                                 Avatar(
                                   size: AvatarSize.extraSmall,
